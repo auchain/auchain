@@ -1,4 +1,4 @@
-## Go Ethereum
+## AUChain
 
 Official golang implementation of the AUChain protocol.
 
