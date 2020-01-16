@@ -50,8 +50,8 @@ const (
 )
 
 var (
-	blockReward = big.NewInt(456e+16) // Block reward in wei to masternode account when successfully mining a block
-	referrerReward = big.NewInt(24e+16)
+	blockReward        = big.NewInt(45125e+14) // Block reward in wei to masternode account when successfully mining a block
+	referrerReward     = big.NewInt(2375e+14)
 	confirmedBlockHead = []byte("confirmed-block-head")
 	uncleHash          = types.CalcUncleHash(nil) // Always Keccak256(RLP([])) as uncles are meaningless outside of PoW.
 )
@@ -131,17 +131,17 @@ type Devote struct {
 	config *params.DevoteConfig // Consensus engine configuration parameters
 	db     ethdb.Database       // Database to store and retrieve snapshot checkpoints
 
-	signer     string   // master node nodeid
-	signFn     SignerFn // signature function
+	signer     string          // master node nodeid
+	signFn     SignerFn        // signature function
 	recents    *lru.ARCCache   // Snapshots for recent block to speed up reorgs
 	signatures *lru.ARCCache   // Signatures of recent blocks to speed up mining
 	proposals  map[string]bool // Current list of proposals we are pushing
 
-	confirmedBlockHeader        *types.Header
-	masternodeListFn            MasternodeListFn             //get current all masternodes
-	mu   sync.RWMutex
-	lock sync.RWMutex
-	stop chan bool
+	confirmedBlockHeader *types.Header
+	masternodeListFn     MasternodeListFn //get current all masternodes
+	mu                   sync.RWMutex
+	lock                 sync.RWMutex
+	stop                 chan bool
 }
 
 func NewDevote(config *params.DevoteConfig, db ethdb.Database) *Devote {

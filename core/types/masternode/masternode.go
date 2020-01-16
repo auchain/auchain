@@ -135,11 +135,34 @@ func getOnlineIds(contract *contract.Contract, blockNumber *big.Int) ([]string, 
 	for lastId != ([8]byte{}) {
 		ctx, err = GetMasternodeContext(opts, contract, lastId)
 		if err != nil {
-			fmt.Println("getOnlineIds error:", err)
+			fmt.Println("getOnlineIds1 error:", err)
 			break
 		}
 		lastId = ctx.preOnline
-		if ctx.Node.BlockOnlineAcc.Cmp(big.NewInt(3000)) < 0 {
+		if new(big.Int).Sub(blockNumber, ctx.Node.BlockLastPing).Cmp(big.NewInt(420)) > 0 {
+			continue
+		} else if ctx.Node.BlockOnlineAcc.Cmp(big.NewInt(3000)) < 0 {
+			continue
+		}
+		ids = append(ids, ctx.Node.ID)
+	}
+	if len(ids) > 20 {
+		return ids, nil
+	}
+	lastId, err = contract.LastOnlineId(opts)
+	if err != nil {
+		return ids, err
+	}
+	for lastId != ([8]byte{}) {
+		ctx, err = GetMasternodeContext(opts, contract, lastId)
+		if err != nil {
+			fmt.Println("getOnlineIds2 error:", err)
+			break
+		}
+		lastId = ctx.preOnline
+		if new(big.Int).Sub(blockNumber, ctx.Node.BlockLastPing).Cmp(big.NewInt(1200)) > 0 {
+			continue
+		} else if ctx.Node.BlockOnlineAcc.Cmp(big.NewInt(1)) < 0 {
 			continue
 		}
 		ids = append(ids, ctx.Node.ID)
