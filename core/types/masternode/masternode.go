@@ -45,7 +45,7 @@ type MasternodeData struct {
 	BlockLastPing  uint64         `json:"blockLastPing"`
 	BlockOnline    uint64         `json:"blockOnline"`
 	BlockOnlineAcc uint64         `json:"blockOnlineAcc"`
-	Referrer       common.Address `json:"referrer"`
+	Referrer       string         `json:"referrer"`
 }
 
 type MasternodeDatas []*MasternodeData

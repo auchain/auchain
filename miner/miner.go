@@ -41,7 +41,7 @@ type Backend interface {
 	TxPool() *core.TxPool
 	ChainDb() ethdb.Database
 	CheckWitnessId(id string) bool
-	GetRefAddr() (common.Address, common.Address)
+	GetRefAddr() (common.Address, []common.Address)
 }
 
 // Miner creates blocks and searches for proof-of-work values.

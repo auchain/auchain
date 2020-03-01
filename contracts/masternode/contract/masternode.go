@@ -28,7 +28,7 @@ var (
 )
 
 // ContractABI is the input ABI used to generate the binding from.
-const ContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"ref\",\"type\":\"address\"}],\"name\":\"register\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"renew\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"oldId\",\"type\":\"bytes8\"}],\"name\":\"reset\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"join\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"quit\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"baseCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countExpiredNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countOnlineNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countTotalNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"expiredNodesOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getInfo\",\"outputs\":[{\"name\":\"lockedBalance\",\"type\":\"uint256\"},{\"name\":\"releasedReward\",\"type\":\"uint256\"},{\"name\":\"totalNodes\",\"type\":\"uint256\"},{\"name\":\"onlineNodes\",\"type\":\"uint256\"},{\"name\":\"expiredNodes\",\"type\":\"uint256\"},{\"name\":\"myValidNodes\",\"type\":\"uint256\"},{\"name\":\"myExpiredNodes\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getRefIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"has\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"idsOf\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastOnlineId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"minBlockTimeout\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"miningPeriod\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"nodeCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"name\":\"nodes\",\"outputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"preId\",\"type\":\"bytes8\"},{\"name\":\"nextId\",\"type\":\"bytes8\"},{\"name\":\"preOnlineId\",\"type\":\"bytes8\"},{\"name\":\"nextOnlineId\",\"type\":\"bytes8\"},{\"name\":\"coinbase\",\"type\":\"address\"},{\"name\":\"status\",\"type\":\"uint256\"},{\"name\":\"blockEnd\",\"type\":\"uint256\"},{\"name\":\"blockRegister\",\"type\":\"uint256\"},{\"name\":\"blockLastPing\",\"type\":\"uint256\"},{\"name\":\"blockOnline\",\"type\":\"uint256\"},{\"name\":\"blockOnlineAcc\",\"type\":\"uint256\"},{\"name\":\"referrer\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"refIdsOf\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+const ContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"ref\",\"type\":\"bytes8\"}],\"name\":\"register\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"renew\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"oldId\",\"type\":\"bytes8\"}],\"name\":\"reset\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"join\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"quit\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"baseCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countExpiredNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countOnlineNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countTotalNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"expiredNodesOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getInfo\",\"outputs\":[{\"name\":\"lockedBalance\",\"type\":\"uint256\"},{\"name\":\"releasedReward\",\"type\":\"uint256\"},{\"name\":\"totalNodes\",\"type\":\"uint256\"},{\"name\":\"onlineNodes\",\"type\":\"uint256\"},{\"name\":\"expiredNodes\",\"type\":\"uint256\"},{\"name\":\"myValidNodes\",\"type\":\"uint256\"},{\"name\":\"myExpiredNodes\",\"type\":\"uint256\"},{\"name\":\"referrers1\",\"type\":\"uint256\"},{\"name\":\"referrers2\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"getReferrers\",\"outputs\":[{\"name\":\"data\",\"type\":\"address[6]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getRefIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getRefIds2\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"has\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"idsOf\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastOnlineId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"minBlockTimeout\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"miningPeriod\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"nodeCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"name\":\"nodes\",\"outputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"preId\",\"type\":\"bytes8\"},{\"name\":\"nextId\",\"type\":\"bytes8\"},{\"name\":\"preOnlineId\",\"type\":\"bytes8\"},{\"name\":\"nextOnlineId\",\"type\":\"bytes8\"},{\"name\":\"coinbase\",\"type\":\"address\"},{\"name\":\"status\",\"type\":\"uint256\"},{\"name\":\"blockEnd\",\"type\":\"uint256\"},{\"name\":\"blockRegister\",\"type\":\"uint256\"},{\"name\":\"blockLastPing\",\"type\":\"uint256\"},{\"name\":\"blockOnline\",\"type\":\"uint256\"},{\"name\":\"blockOnlineAcc\",\"type\":\"uint256\"},{\"name\":\"referrer\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes8\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"referrers\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"refIdsOf1\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"refIdsOf2\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
 
 // ContractBin is the compiled bytecode used for deploying new contracts.
 const ContractBin = `0x00`
@@ -356,7 +356,7 @@ func (_Contract *ContractCallerSession) GetIds(addr common.Address, startPos *bi
 
 // GetInfo is a free data retrieval call binding the contract method 0xffdd5cf1.
 //
-// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes)
+// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2)
 func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Address) (struct {
 	LockedBalance  *big.Int
 	ReleasedReward *big.Int
@@ -365,6 +365,8 @@ func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Addres
 	ExpiredNodes   *big.Int
 	MyValidNodes   *big.Int
 	MyExpiredNodes *big.Int
+	Referrers1     *big.Int
+	Referrers2     *big.Int
 }, error) {
 	ret := new(struct {
 		LockedBalance  *big.Int
@@ -374,6 +376,8 @@ func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Addres
 		ExpiredNodes   *big.Int
 		MyValidNodes   *big.Int
 		MyExpiredNodes *big.Int
+		Referrers1     *big.Int
+		Referrers2     *big.Int
 	})
 	out := ret
 	err := _Contract.contract.Call(opts, out, "getInfo", addr)
@@ -382,7 +386,7 @@ func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Addres
 
 // GetInfo is a free data retrieval call binding the contract method 0xffdd5cf1.
 //
-// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes)
+// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2)
 func (_Contract *ContractSession) GetInfo(addr common.Address) (struct {
 	LockedBalance  *big.Int
 	ReleasedReward *big.Int
@@ -391,13 +395,15 @@ func (_Contract *ContractSession) GetInfo(addr common.Address) (struct {
 	ExpiredNodes   *big.Int
 	MyValidNodes   *big.Int
 	MyExpiredNodes *big.Int
+	Referrers1     *big.Int
+	Referrers2     *big.Int
 }, error) {
 	return _Contract.Contract.GetInfo(&_Contract.CallOpts, addr)
 }
 
 // GetInfo is a free data retrieval call binding the contract method 0xffdd5cf1.
 //
-// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes)
+// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2)
 func (_Contract *ContractCallerSession) GetInfo(addr common.Address) (struct {
 	LockedBalance  *big.Int
 	ReleasedReward *big.Int
@@ -406,6 +412,8 @@ func (_Contract *ContractCallerSession) GetInfo(addr common.Address) (struct {
 	ExpiredNodes   *big.Int
 	MyValidNodes   *big.Int
 	MyExpiredNodes *big.Int
+	Referrers1     *big.Int
+	Referrers2     *big.Int
 }, error) {
 	return _Contract.Contract.GetInfo(&_Contract.CallOpts, addr)
 }
@@ -444,6 +452,68 @@ func (_Contract *ContractCallerSession) GetRefIds(addr common.Address, startPos 
 	Data   [5][8]byte
 }, error) {
 	return _Contract.Contract.GetRefIds(&_Contract.CallOpts, addr, startPos)
+}
+
+// GetRefIds2 is a free data retrieval call binding the contract method 0xc27b27f4.
+//
+// Solidity: function getRefIds2(address addr, uint256 startPos) constant returns(uint256 length, bytes8[5] data)
+func (_Contract *ContractCaller) GetRefIds2(opts *bind.CallOpts, addr common.Address, startPos *big.Int) (struct {
+	Length *big.Int
+	Data   [5][8]byte
+}, error) {
+	ret := new(struct {
+		Length *big.Int
+		Data   [5][8]byte
+	})
+	out := ret
+	err := _Contract.contract.Call(opts, out, "getRefIds2", addr, startPos)
+	return *ret, err
+}
+
+// GetRefIds2 is a free data retrieval call binding the contract method 0xc27b27f4.
+//
+// Solidity: function getRefIds2(address addr, uint256 startPos) constant returns(uint256 length, bytes8[5] data)
+func (_Contract *ContractSession) GetRefIds2(addr common.Address, startPos *big.Int) (struct {
+	Length *big.Int
+	Data   [5][8]byte
+}, error) {
+	return _Contract.Contract.GetRefIds2(&_Contract.CallOpts, addr, startPos)
+}
+
+// GetRefIds2 is a free data retrieval call binding the contract method 0xc27b27f4.
+//
+// Solidity: function getRefIds2(address addr, uint256 startPos) constant returns(uint256 length, bytes8[5] data)
+func (_Contract *ContractCallerSession) GetRefIds2(addr common.Address, startPos *big.Int) (struct {
+	Length *big.Int
+	Data   [5][8]byte
+}, error) {
+	return _Contract.Contract.GetRefIds2(&_Contract.CallOpts, addr, startPos)
+}
+
+// GetReferrers is a free data retrieval call binding the contract method 0x4fcbf5af.
+//
+// Solidity: function getReferrers(bytes8 id) constant returns(address[6] data)
+func (_Contract *ContractCaller) GetReferrers(opts *bind.CallOpts, id [8]byte) ([6]common.Address, error) {
+	var (
+		ret0 = new([6]common.Address)
+	)
+	out := ret0
+	err := _Contract.contract.Call(opts, out, "getReferrers", id)
+	return *ret0, err
+}
+
+// GetReferrers is a free data retrieval call binding the contract method 0x4fcbf5af.
+//
+// Solidity: function getReferrers(bytes8 id) constant returns(address[6] data)
+func (_Contract *ContractSession) GetReferrers(id [8]byte) ([6]common.Address, error) {
+	return _Contract.Contract.GetReferrers(&_Contract.CallOpts, id)
+}
+
+// GetReferrers is a free data retrieval call binding the contract method 0x4fcbf5af.
+//
+// Solidity: function getReferrers(bytes8 id) constant returns(address[6] data)
+func (_Contract *ContractCallerSession) GetReferrers(id [8]byte) ([6]common.Address, error) {
+	return _Contract.Contract.GetReferrers(&_Contract.CallOpts, id)
 }
 
 // Has is a free data retrieval call binding the contract method 0x16e7f171.
@@ -630,7 +700,7 @@ func (_Contract *ContractCallerSession) NodeCost() (*big.Int, error) {
 
 // Nodes is a free data retrieval call binding the contract method 0x251c22d1.
 //
-// Solidity: function nodes(bytes8 ) constant returns(bytes32 id1, bytes32 id2, bytes8 preId, bytes8 nextId, bytes8 preOnlineId, bytes8 nextOnlineId, address coinbase, uint256 status, uint256 blockEnd, uint256 blockRegister, uint256 blockLastPing, uint256 blockOnline, uint256 blockOnlineAcc, address referrer)
+// Solidity: function nodes(bytes8 ) constant returns(bytes32 id1, bytes32 id2, bytes8 preId, bytes8 nextId, bytes8 preOnlineId, bytes8 nextOnlineId, address coinbase, uint256 status, uint256 blockEnd, uint256 blockRegister, uint256 blockLastPing, uint256 blockOnline, uint256 blockOnlineAcc, bytes8 referrer)
 func (_Contract *ContractCaller) Nodes(opts *bind.CallOpts, arg0 [8]byte) (struct {
 	Id1            [32]byte
 	Id2            [32]byte
@@ -645,7 +715,7 @@ func (_Contract *ContractCaller) Nodes(opts *bind.CallOpts, arg0 [8]byte) (struc
 	BlockLastPing  *big.Int
 	BlockOnline    *big.Int
 	BlockOnlineAcc *big.Int
-	Referrer       common.Address
+	Referrer       [8]byte
 }, error) {
 	ret := new(struct {
 		Id1            [32]byte
@@ -661,7 +731,7 @@ func (_Contract *ContractCaller) Nodes(opts *bind.CallOpts, arg0 [8]byte) (struc
 		BlockLastPing  *big.Int
 		BlockOnline    *big.Int
 		BlockOnlineAcc *big.Int
-		Referrer       common.Address
+		Referrer       [8]byte
 	})
 	out := ret
 	err := _Contract.contract.Call(opts, out, "nodes", arg0)
@@ -670,7 +740,7 @@ func (_Contract *ContractCaller) Nodes(opts *bind.CallOpts, arg0 [8]byte) (struc
 
 // Nodes is a free data retrieval call binding the contract method 0x251c22d1.
 //
-// Solidity: function nodes(bytes8 ) constant returns(bytes32 id1, bytes32 id2, bytes8 preId, bytes8 nextId, bytes8 preOnlineId, bytes8 nextOnlineId, address coinbase, uint256 status, uint256 blockEnd, uint256 blockRegister, uint256 blockLastPing, uint256 blockOnline, uint256 blockOnlineAcc, address referrer)
+// Solidity: function nodes(bytes8 ) constant returns(bytes32 id1, bytes32 id2, bytes8 preId, bytes8 nextId, bytes8 preOnlineId, bytes8 nextOnlineId, address coinbase, uint256 status, uint256 blockEnd, uint256 blockRegister, uint256 blockLastPing, uint256 blockOnline, uint256 blockOnlineAcc, bytes8 referrer)
 func (_Contract *ContractSession) Nodes(arg0 [8]byte) (struct {
 	Id1            [32]byte
 	Id2            [32]byte
@@ -685,14 +755,14 @@ func (_Contract *ContractSession) Nodes(arg0 [8]byte) (struct {
 	BlockLastPing  *big.Int
 	BlockOnline    *big.Int
 	BlockOnlineAcc *big.Int
-	Referrer       common.Address
+	Referrer       [8]byte
 }, error) {
 	return _Contract.Contract.Nodes(&_Contract.CallOpts, arg0)
 }
 
 // Nodes is a free data retrieval call binding the contract method 0x251c22d1.
 //
-// Solidity: function nodes(bytes8 ) constant returns(bytes32 id1, bytes32 id2, bytes8 preId, bytes8 nextId, bytes8 preOnlineId, bytes8 nextOnlineId, address coinbase, uint256 status, uint256 blockEnd, uint256 blockRegister, uint256 blockLastPing, uint256 blockOnline, uint256 blockOnlineAcc, address referrer)
+// Solidity: function nodes(bytes8 ) constant returns(bytes32 id1, bytes32 id2, bytes8 preId, bytes8 nextId, bytes8 preOnlineId, bytes8 nextOnlineId, address coinbase, uint256 status, uint256 blockEnd, uint256 blockRegister, uint256 blockLastPing, uint256 blockOnline, uint256 blockOnlineAcc, bytes8 referrer)
 func (_Contract *ContractCallerSession) Nodes(arg0 [8]byte) (struct {
 	Id1            [32]byte
 	Id2            [32]byte
@@ -707,55 +777,107 @@ func (_Contract *ContractCallerSession) Nodes(arg0 [8]byte) (struct {
 	BlockLastPing  *big.Int
 	BlockOnline    *big.Int
 	BlockOnlineAcc *big.Int
-	Referrer       common.Address
+	Referrer       [8]byte
 }, error) {
 	return _Contract.Contract.Nodes(&_Contract.CallOpts, arg0)
 }
 
-// RefIdsOf is a free data retrieval call binding the contract method 0x33759a39.
+// RefIdsOf1 is a free data retrieval call binding the contract method 0x52b68cee.
 //
-// Solidity: function refIdsOf(address , uint256 ) constant returns(bytes8)
-func (_Contract *ContractCaller) RefIdsOf(opts *bind.CallOpts, arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
+// Solidity: function refIdsOf1(address , uint256 ) constant returns(bytes8)
+func (_Contract *ContractCaller) RefIdsOf1(opts *bind.CallOpts, arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
 	var (
 		ret0 = new([8]byte)
 	)
 	out := ret0
-	err := _Contract.contract.Call(opts, out, "refIdsOf", arg0, arg1)
+	err := _Contract.contract.Call(opts, out, "refIdsOf1", arg0, arg1)
 	return *ret0, err
 }
 
-// RefIdsOf is a free data retrieval call binding the contract method 0x33759a39.
+// RefIdsOf1 is a free data retrieval call binding the contract method 0x52b68cee.
 //
-// Solidity: function refIdsOf(address , uint256 ) constant returns(bytes8)
-func (_Contract *ContractSession) RefIdsOf(arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
-	return _Contract.Contract.RefIdsOf(&_Contract.CallOpts, arg0, arg1)
+// Solidity: function refIdsOf1(address , uint256 ) constant returns(bytes8)
+func (_Contract *ContractSession) RefIdsOf1(arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
+	return _Contract.Contract.RefIdsOf1(&_Contract.CallOpts, arg0, arg1)
 }
 
-// RefIdsOf is a free data retrieval call binding the contract method 0x33759a39.
+// RefIdsOf1 is a free data retrieval call binding the contract method 0x52b68cee.
 //
-// Solidity: function refIdsOf(address , uint256 ) constant returns(bytes8)
-func (_Contract *ContractCallerSession) RefIdsOf(arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
-	return _Contract.Contract.RefIdsOf(&_Contract.CallOpts, arg0, arg1)
+// Solidity: function refIdsOf1(address , uint256 ) constant returns(bytes8)
+func (_Contract *ContractCallerSession) RefIdsOf1(arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
+	return _Contract.Contract.RefIdsOf1(&_Contract.CallOpts, arg0, arg1)
 }
 
-// Register is a paid mutator transaction binding the contract method 0x15d7bf44.
+// RefIdsOf2 is a free data retrieval call binding the contract method 0x641bd71a.
 //
-// Solidity: function register(bytes32 id1, bytes32 id2, address ref) returns()
-func (_Contract *ContractTransactor) Register(opts *bind.TransactOpts, id1 [32]byte, id2 [32]byte, ref common.Address) (*types.Transaction, error) {
+// Solidity: function refIdsOf2(address , uint256 ) constant returns(bytes8)
+func (_Contract *ContractCaller) RefIdsOf2(opts *bind.CallOpts, arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
+	var (
+		ret0 = new([8]byte)
+	)
+	out := ret0
+	err := _Contract.contract.Call(opts, out, "refIdsOf2", arg0, arg1)
+	return *ret0, err
+}
+
+// RefIdsOf2 is a free data retrieval call binding the contract method 0x641bd71a.
+//
+// Solidity: function refIdsOf2(address , uint256 ) constant returns(bytes8)
+func (_Contract *ContractSession) RefIdsOf2(arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
+	return _Contract.Contract.RefIdsOf2(&_Contract.CallOpts, arg0, arg1)
+}
+
+// RefIdsOf2 is a free data retrieval call binding the contract method 0x641bd71a.
+//
+// Solidity: function refIdsOf2(address , uint256 ) constant returns(bytes8)
+func (_Contract *ContractCallerSession) RefIdsOf2(arg0 common.Address, arg1 *big.Int) ([8]byte, error) {
+	return _Contract.Contract.RefIdsOf2(&_Contract.CallOpts, arg0, arg1)
+}
+
+// Referrers is a free data retrieval call binding the contract method 0x5d12e361.
+//
+// Solidity: function referrers(bytes8 , uint256 ) constant returns(address)
+func (_Contract *ContractCaller) Referrers(opts *bind.CallOpts, arg0 [8]byte, arg1 *big.Int) (common.Address, error) {
+	var (
+		ret0 = new(common.Address)
+	)
+	out := ret0
+	err := _Contract.contract.Call(opts, out, "referrers", arg0, arg1)
+	return *ret0, err
+}
+
+// Referrers is a free data retrieval call binding the contract method 0x5d12e361.
+//
+// Solidity: function referrers(bytes8 , uint256 ) constant returns(address)
+func (_Contract *ContractSession) Referrers(arg0 [8]byte, arg1 *big.Int) (common.Address, error) {
+	return _Contract.Contract.Referrers(&_Contract.CallOpts, arg0, arg1)
+}
+
+// Referrers is a free data retrieval call binding the contract method 0x5d12e361.
+//
+// Solidity: function referrers(bytes8 , uint256 ) constant returns(address)
+func (_Contract *ContractCallerSession) Referrers(arg0 [8]byte, arg1 *big.Int) (common.Address, error) {
+	return _Contract.Contract.Referrers(&_Contract.CallOpts, arg0, arg1)
+}
+
+// Register is a paid mutator transaction binding the contract method 0x7ff69d3f.
+//
+// Solidity: function register(bytes32 id1, bytes32 id2, bytes8 ref) returns()
+func (_Contract *ContractTransactor) Register(opts *bind.TransactOpts, id1 [32]byte, id2 [32]byte, ref [8]byte) (*types.Transaction, error) {
 	return _Contract.contract.Transact(opts, "register", id1, id2, ref)
 }
 
-// Register is a paid mutator transaction binding the contract method 0x15d7bf44.
+// Register is a paid mutator transaction binding the contract method 0x7ff69d3f.
 //
-// Solidity: function register(bytes32 id1, bytes32 id2, address ref) returns()
-func (_Contract *ContractSession) Register(id1 [32]byte, id2 [32]byte, ref common.Address) (*types.Transaction, error) {
+// Solidity: function register(bytes32 id1, bytes32 id2, bytes8 ref) returns()
+func (_Contract *ContractSession) Register(id1 [32]byte, id2 [32]byte, ref [8]byte) (*types.Transaction, error) {
 	return _Contract.Contract.Register(&_Contract.TransactOpts, id1, id2, ref)
 }
 
-// Register is a paid mutator transaction binding the contract method 0x15d7bf44.
+// Register is a paid mutator transaction binding the contract method 0x7ff69d3f.
 //
-// Solidity: function register(bytes32 id1, bytes32 id2, address ref) returns()
-func (_Contract *ContractTransactorSession) Register(id1 [32]byte, id2 [32]byte, ref common.Address) (*types.Transaction, error) {
+// Solidity: function register(bytes32 id1, bytes32 id2, bytes8 ref) returns()
+func (_Contract *ContractTransactorSession) Register(id1 [32]byte, id2 [32]byte, ref [8]byte) (*types.Transaction, error) {
 	return _Contract.Contract.Register(&_Contract.TransactOpts, id1, id2, ref)
 }
 

@@ -516,12 +516,12 @@ func (self *worker) commitNewWork() (*Work, error) {
 	}
 	// Only set the coinbase if we are mining (avoid spurious block rewards)
 	if atomic.LoadInt32(&self.mining) == 1 {
-		coinbase, referrer := self.eth.GetRefAddr()
+		coinbase, referrers := self.eth.GetRefAddr()
 		if coinbase == (common.Address{}) {
 			return nil, fmt.Errorf("[worker] No Coinbase")
 		}
 		header.Coinbase = coinbase
-		header.Referrer = referrer
+		header.Referrers = referrers
 	}
 	// Could potentially happen if starting to mine in an odd state.
 	err := self.makeCurrent(parent, header)

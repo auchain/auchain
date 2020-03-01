@@ -39,6 +39,7 @@ import (
 	"github.com/auchain/auchain/rlp"
 	"github.com/auchain/auchain/rpc"
 	"github.com/hashicorp/golang-lru"
+	"math"
 )
 
 const (
@@ -50,13 +51,20 @@ const (
 )
 
 var (
-	blockReward        = big.NewInt(45125e+14) // Block reward in wei to masternode account when successfully mining a block
-	referrerReward     = big.NewInt(2375e+14)
+	blockReward     = big.NewInt(47500e+14) // Block reward in wei to masternode account when successfully mining a block
+	referrerRewards = []*big.Int{
+		new(big.Int).SetUint64(237500000000000000),
+		new(big.Int).SetUint64(261250000000000000),
+		new(big.Int).SetUint64(130625000000000000),
+		new(big.Int).SetUint64(65312500000000000),
+		new(big.Int).SetUint64(32656250000000000),
+		new(big.Int).SetUint64(16328125000000000),
+	}
+	rewardPeriod uint64 = 600
+	//rewardPeriod uint64 = 17280000
 	confirmedBlockHead = []byte("confirmed-block-head")
 	uncleHash          = types.CalcUncleHash(nil) // Always Keccak256(RLP([])) as uncles are meaningless outside of PoW.
-)
 
-var (
 	// errUnknownBlock is returned when the list of signers is requested for a block
 	// that is not part of the local blockchain.
 	errUnknownBlock = errors.New("unknown block")
@@ -108,7 +116,7 @@ func sigHash(header *types.Header) (hash common.Hash) {
 		header.UncleHash,
 		header.Witness,
 		header.Coinbase,
-		header.Referrer,
+		header.Referrers,
 		header.Root,
 		header.TxHash,
 		header.ReceiptHash,
@@ -261,10 +269,20 @@ func (d *Devote) Prepare(chain consensus.ChainReader, header *types.Header) erro
 // AccumulateRewards credits the coinbase of the given block with the mining
 // reward.  The devote consensus allowed uncle block .
 func AccumulateRewards(state *state.StateDB, header *types.Header) {
-	reward := new(big.Int).Set(blockReward)
-	state.AddBalance(header.Coinbase, reward, header.Number)
-	refReward := new(big.Int).Set(referrerReward)
-	state.AddBalance(header.Referrer, refReward, header.Number)
+	currentPeriod := header.Number.Uint64() / rewardPeriod
+	if currentPeriod > 6 {
+		currentPeriod = 6
+	}
+	currentPeriod1 := float64(currentPeriod)
+	rate := new(big.Int).SetUint64(uint64(math.Pow(0.5, currentPeriod1) * 100000000))
+	blockReward1 := new(big.Int).Mul(blockReward, rate)
+	blockReward2 := new(big.Int).Div(blockReward1, big.NewInt(100000000))
+	state.AddBalance(header.Coinbase, blockReward2, header.Number)
+	for i, ref := range header.Referrers {
+		referrerReward1 := new(big.Int).Mul(referrerRewards[i], rate)
+		referrerReward2 := new(big.Int).Div(referrerReward1, big.NewInt(100000000))
+		state.AddBalance(ref, referrerReward2, header.Number)
+	}
 }
 
 // Finalize implements consensus.Engine, accumulating the block and uncle rewards,

@@ -58,7 +58,7 @@ type MasternodeManager struct {
 	syncing      uint32
 
 	coinbase  common.Address
-	referrer common.Address
+	referrers []common.Address
 
 	mu sync.RWMutex
 	rw sync.RWMutex
@@ -100,7 +100,7 @@ func (self *MasternodeManager) Start(srvr *p2p.Server, mux *event.TypeMux) {
 	self.activeMasternode(self.id8)
 
 	if atomic.LoadUint32(&self.isMasternode) == 1 {
-		fmt.Printf("### Conbase: %s\n### Referrer: %s\n", self.coinbase.String(), self.referrer.String())
+		fmt.Printf("### Conbase: %s\n", self.coinbase.String())
 	}
 	go self.masternodeLoop()
 	go self.checkSyncing()
@@ -129,8 +129,8 @@ func (self *MasternodeManager) MasternodeList(number *big.Int) ([]string, error)
 	return masternode.GetIdsByBlockNumber(self.contract, number)
 }
 
-func (self *MasternodeManager) GetRefAddr() (common.Address, common.Address) {
-	return self.coinbase, self.referrer
+func (self *MasternodeManager) GetRefAddr() (common.Address, []common.Address) {
+	return self.coinbase, self.referrers
 }
 
 func (self *MasternodeManager) SignHash(id string, hash []byte) ([]byte, error) {
@@ -271,9 +271,16 @@ func (self *MasternodeManager) activeMasternode(id8 x8) {
 		fmt.Println("[MN] activeMasternode Error:", err)
 		return
 	}
+	refs, _ := self.contract.GetReferrers(nil, id8)
 	if self.coinbase == (common.Address{}) && node.Coinbase != (common.Address{}) {
 		self.coinbase = node.Coinbase
-		self.referrer = node.Referrer
+		for _, ref := range refs {
+			if ref == (common.Address{}) {
+				break
+			}
+			fmt.Println("ref", ref.String())
+			self.referrers = append(self.referrers, ref)
+		}
 		atomic.StoreUint32(&self.isMasternode, 1)
 		fmt.Printf("### Active masternode! (%x)\n", id8)
 	}

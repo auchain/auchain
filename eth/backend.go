@@ -504,7 +504,7 @@ func (s *Ethereum) NetVersion() uint64                 { return s.networkID }
 func (s *Ethereum) Downloader() *downloader.Downloader { return s.protocolManager.downloader }
 func (s *Ethereum) CheckWitnessId(id string) bool      { return s.masternodeManager.CheckMasternodeId(id) }
 
-func (s *Ethereum) GetRefAddr() (common.Address, common.Address) {
+func (s *Ethereum) GetRefAddr() (common.Address, []common.Address) {
 	return s.masternodeManager.GetRefAddr()
 }
 
