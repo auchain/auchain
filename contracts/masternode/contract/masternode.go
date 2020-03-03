@@ -28,7 +28,7 @@ var (
 )
 
 // ContractABI is the input ABI used to generate the binding from.
-const ContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"ref\",\"type\":\"bytes8\"}],\"name\":\"register\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"renew\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"oldId\",\"type\":\"bytes8\"}],\"name\":\"reset\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"join\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"quit\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"baseCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countExpiredNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countOnlineNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countTotalNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"expiredNodesOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getInfo\",\"outputs\":[{\"name\":\"lockedBalance\",\"type\":\"uint256\"},{\"name\":\"releasedReward\",\"type\":\"uint256\"},{\"name\":\"totalNodes\",\"type\":\"uint256\"},{\"name\":\"onlineNodes\",\"type\":\"uint256\"},{\"name\":\"expiredNodes\",\"type\":\"uint256\"},{\"name\":\"myValidNodes\",\"type\":\"uint256\"},{\"name\":\"myExpiredNodes\",\"type\":\"uint256\"},{\"name\":\"referrers1\",\"type\":\"uint256\"},{\"name\":\"referrers2\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"getReferrers\",\"outputs\":[{\"name\":\"data\",\"type\":\"address[6]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getRefIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getRefIds2\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"has\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"idsOf\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastOnlineId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"minBlockTimeout\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"miningPeriod\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"nodeCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"name\":\"nodes\",\"outputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"preId\",\"type\":\"bytes8\"},{\"name\":\"nextId\",\"type\":\"bytes8\"},{\"name\":\"preOnlineId\",\"type\":\"bytes8\"},{\"name\":\"nextOnlineId\",\"type\":\"bytes8\"},{\"name\":\"coinbase\",\"type\":\"address\"},{\"name\":\"status\",\"type\":\"uint256\"},{\"name\":\"blockEnd\",\"type\":\"uint256\"},{\"name\":\"blockRegister\",\"type\":\"uint256\"},{\"name\":\"blockLastPing\",\"type\":\"uint256\"},{\"name\":\"blockOnline\",\"type\":\"uint256\"},{\"name\":\"blockOnlineAcc\",\"type\":\"uint256\"},{\"name\":\"referrer\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes8\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"referrers\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"refIdsOf1\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"refIdsOf2\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+const ContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"ref\",\"type\":\"bytes8\"}],\"name\":\"register\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"renew\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"oldId\",\"type\":\"bytes8\"}],\"name\":\"reset\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"join\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes8\"},{\"indexed\":false,\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"quit\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"baseCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countExpiredNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countOnlineNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"countTotalNode\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"expiredNodesOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getInfo\",\"outputs\":[{\"name\":\"lockedBalance\",\"type\":\"uint256\"},{\"name\":\"releasedReward\",\"type\":\"uint256\"},{\"name\":\"totalNodes\",\"type\":\"uint256\"},{\"name\":\"onlineNodes\",\"type\":\"uint256\"},{\"name\":\"expiredNodes\",\"type\":\"uint256\"},{\"name\":\"myValidNodes\",\"type\":\"uint256\"},{\"name\":\"myExpiredNodes\",\"type\":\"uint256\"},{\"name\":\"referrers1\",\"type\":\"uint256\"},{\"name\":\"referrers2\",\"type\":\"uint256\"},{\"name\":\"referrersTotal\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"getReferrers\",\"outputs\":[{\"name\":\"data\",\"type\":\"address[6]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getRefIds\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"},{\"name\":\"startPos\",\"type\":\"uint256\"}],\"name\":\"getRefIds2\",\"outputs\":[{\"name\":\"length\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes8[5]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"id\",\"type\":\"bytes8\"}],\"name\":\"has\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"idsOf\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"lastOnlineId\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"minBlockTimeout\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"miningPeriod\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"nodeCost\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"name\":\"nodes\",\"outputs\":[{\"name\":\"id1\",\"type\":\"bytes32\"},{\"name\":\"id2\",\"type\":\"bytes32\"},{\"name\":\"preId\",\"type\":\"bytes8\"},{\"name\":\"nextId\",\"type\":\"bytes8\"},{\"name\":\"preOnlineId\",\"type\":\"bytes8\"},{\"name\":\"nextOnlineId\",\"type\":\"bytes8\"},{\"name\":\"coinbase\",\"type\":\"address\"},{\"name\":\"status\",\"type\":\"uint256\"},{\"name\":\"blockEnd\",\"type\":\"uint256\"},{\"name\":\"blockRegister\",\"type\":\"uint256\"},{\"name\":\"blockLastPing\",\"type\":\"uint256\"},{\"name\":\"blockOnline\",\"type\":\"uint256\"},{\"name\":\"blockOnlineAcc\",\"type\":\"uint256\"},{\"name\":\"referrer\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes8\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"referrers\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"referrersCount\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"refIdsOf1\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"refIdsOf2\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
 
 // ContractBin is the compiled bytecode used for deploying new contracts.
 const ContractBin = `0x00`
@@ -356,7 +356,7 @@ func (_Contract *ContractCallerSession) GetIds(addr common.Address, startPos *bi
 
 // GetInfo is a free data retrieval call binding the contract method 0xffdd5cf1.
 //
-// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2)
+// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2, uint256 referrersTotal)
 func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Address) (struct {
 	LockedBalance  *big.Int
 	ReleasedReward *big.Int
@@ -367,6 +367,7 @@ func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Addres
 	MyExpiredNodes *big.Int
 	Referrers1     *big.Int
 	Referrers2     *big.Int
+	ReferrersTotal *big.Int
 }, error) {
 	ret := new(struct {
 		LockedBalance  *big.Int
@@ -378,6 +379,7 @@ func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Addres
 		MyExpiredNodes *big.Int
 		Referrers1     *big.Int
 		Referrers2     *big.Int
+		ReferrersTotal *big.Int
 	})
 	out := ret
 	err := _Contract.contract.Call(opts, out, "getInfo", addr)
@@ -386,7 +388,7 @@ func (_Contract *ContractCaller) GetInfo(opts *bind.CallOpts, addr common.Addres
 
 // GetInfo is a free data retrieval call binding the contract method 0xffdd5cf1.
 //
-// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2)
+// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2, uint256 referrersTotal)
 func (_Contract *ContractSession) GetInfo(addr common.Address) (struct {
 	LockedBalance  *big.Int
 	ReleasedReward *big.Int
@@ -397,13 +399,14 @@ func (_Contract *ContractSession) GetInfo(addr common.Address) (struct {
 	MyExpiredNodes *big.Int
 	Referrers1     *big.Int
 	Referrers2     *big.Int
+	ReferrersTotal *big.Int
 }, error) {
 	return _Contract.Contract.GetInfo(&_Contract.CallOpts, addr)
 }
 
 // GetInfo is a free data retrieval call binding the contract method 0xffdd5cf1.
 //
-// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2)
+// Solidity: function getInfo(address addr) constant returns(uint256 lockedBalance, uint256 releasedReward, uint256 totalNodes, uint256 onlineNodes, uint256 expiredNodes, uint256 myValidNodes, uint256 myExpiredNodes, uint256 referrers1, uint256 referrers2, uint256 referrersTotal)
 func (_Contract *ContractCallerSession) GetInfo(addr common.Address) (struct {
 	LockedBalance  *big.Int
 	ReleasedReward *big.Int
@@ -414,6 +417,7 @@ func (_Contract *ContractCallerSession) GetInfo(addr common.Address) (struct {
 	MyExpiredNodes *big.Int
 	Referrers1     *big.Int
 	Referrers2     *big.Int
+	ReferrersTotal *big.Int
 }, error) {
 	return _Contract.Contract.GetInfo(&_Contract.CallOpts, addr)
 }
@@ -858,6 +862,32 @@ func (_Contract *ContractSession) Referrers(arg0 [8]byte, arg1 *big.Int) (common
 // Solidity: function referrers(bytes8 , uint256 ) constant returns(address)
 func (_Contract *ContractCallerSession) Referrers(arg0 [8]byte, arg1 *big.Int) (common.Address, error) {
 	return _Contract.Contract.Referrers(&_Contract.CallOpts, arg0, arg1)
+}
+
+// ReferrersCount is a free data retrieval call binding the contract method 0xda3c173a.
+//
+// Solidity: function referrersCount(address , uint256 ) constant returns(uint256)
+func (_Contract *ContractCaller) ReferrersCount(opts *bind.CallOpts, arg0 common.Address, arg1 *big.Int) (*big.Int, error) {
+	var (
+		ret0 = new(*big.Int)
+	)
+	out := ret0
+	err := _Contract.contract.Call(opts, out, "referrersCount", arg0, arg1)
+	return *ret0, err
+}
+
+// ReferrersCount is a free data retrieval call binding the contract method 0xda3c173a.
+//
+// Solidity: function referrersCount(address , uint256 ) constant returns(uint256)
+func (_Contract *ContractSession) ReferrersCount(arg0 common.Address, arg1 *big.Int) (*big.Int, error) {
+	return _Contract.Contract.ReferrersCount(&_Contract.CallOpts, arg0, arg1)
+}
+
+// ReferrersCount is a free data retrieval call binding the contract method 0xda3c173a.
+//
+// Solidity: function referrersCount(address , uint256 ) constant returns(uint256)
+func (_Contract *ContractCallerSession) ReferrersCount(arg0 common.Address, arg1 *big.Int) (*big.Int, error) {
+	return _Contract.Contract.ReferrersCount(&_Contract.CallOpts, arg0, arg1)
 }
 
 // Register is a paid mutator transaction binding the contract method 0x7ff69d3f.

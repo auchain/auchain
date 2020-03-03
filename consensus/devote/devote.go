@@ -60,8 +60,7 @@ var (
 		new(big.Int).SetUint64(32656250000000000),
 		new(big.Int).SetUint64(16328125000000000),
 	}
-	rewardPeriod uint64 = 600
-	//rewardPeriod uint64 = 17280000
+	rewardPeriod uint64 = 17280000
 	confirmedBlockHead = []byte("confirmed-block-head")
 	uncleHash          = types.CalcUncleHash(nil) // Always Keccak256(RLP([])) as uncles are meaningless outside of PoW.
 
