@@ -310,7 +310,7 @@ func DefaultGenesisBlock() *Genesis {
 	alloc := decodePrealloc(mainnetAllocData)
 	alloc[common.BytesToAddress(params.MasterndeContractAddress.Bytes())] = masternodeContractAccount(params.MainnetMasternodes)
 	alloc[common.HexToAddress("0xe1f99A3bA242d01EA0001B77Cd143e595b8743aC")] = GenesisAccount{
-		Balance: new(big.Int).Mul(big.NewInt(21e+10), big.NewInt(1e+15)),
+		Balance: new(big.Int).Mul(big.NewInt(13e+9), big.NewInt(1e+15)),
 	}
 	config := params.DevoteChainConfig
 	var witnesses []string
