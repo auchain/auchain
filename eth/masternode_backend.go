@@ -278,7 +278,6 @@ func (self *MasternodeManager) activeMasternode(id8 x8) {
 			if ref == (common.Address{}) {
 				break
 			}
-			fmt.Println("ref", ref.String())
 			self.referrers = append(self.referrers, ref)
 		}
 		atomic.StoreUint32(&self.isMasternode, 1)
