@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the auc library. If not, see <http://www.gnu.org/licenses/>.
 
-//The Masternode Class. For managing the InstantTX process. It contains the input of the 20000ETZ, signature to prove
+//The Masternode Class. For managing the InstantTX process. It contains the input of the 10000AUC, signature to prove
 // it's the one who own that ip address and code for calculating the payment election.
 
 package devotedb

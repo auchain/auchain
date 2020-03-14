@@ -91,7 +91,7 @@ const (
 	Bn256PairingBaseGas     uint64 = 100000 // Base price for an elliptic curve pairing check
 	Bn256PairingPerPointGas uint64 = 80000  // Per-point price for an elliptic curve pairing check
 
-	Epoch              uint64 = 600
+	Epoch              uint64 = 300
 	Period             uint64 = 3
 )
 
