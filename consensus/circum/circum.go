@@ -387,8 +387,8 @@ func (d *Circum) CheckWitness(lastBlock *types.Block, now int64) error {
 }
 
 func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
-	timeDiff := now - lastBlock.Time
-	if timeDiff < 3 {
+	nextPeriod := (now - lastBlock.Time) / params.Period
+	if nextPeriod == 0 {
 		return "", ErrWaitForPrevBlock
 	}
 	stableBlockNumber := d.getStableBlockNumber(lastBlock.Number)
@@ -404,9 +404,7 @@ func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
 	if lastBlock.Time > now {
 		return "", fmt.Errorf("lookup error time")
 	}
-	nextNth1 := timeDiff / params.Period + uint64(lastNth)
-	nextNth := nextNth1 % uint64(len(nodes))
-
+	nextNth := (uint64(lastNth) + nextPeriod) % uint64(len(nodes))
 	return nodes[nextNth], nil
 }
 
