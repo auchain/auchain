@@ -356,7 +356,7 @@ func unpackTestEventData(dest interface{}, hexData string, jsonEvent []byte, ass
 
 /*
 Taken from
-https://github.com/auc/go-auc/pull/15568
+https://github.com/auchain/auchain/pull/15568
 */
 
 type testResult struct {

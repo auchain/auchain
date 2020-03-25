@@ -34,7 +34,6 @@ import (
 	"github.com/auchain/auchain/log"
 	"github.com/auchain/auchain/metrics"
 	"github.com/auchain/auchain/params"
-	"github.com/auchain/auchain/core/types/devotedb"
 )
 
 var (
@@ -1578,9 +1577,6 @@ func (d *Downloader) processFastSyncContent(latest *types.Header) error {
 			// If new pivot block found, cancel old state retrieval and restart
 			if oldPivot != P {
 				stateSync.Cancel()
-				if err := d.syncDevoteProtocolState(P.Header.Protocol); err != nil {
-					return err
-				}
 				stateSync = d.syncState(P.Header.Root)
 				defer stateSync.Cancel()
 				go func() {
@@ -1633,18 +1629,6 @@ func splitAroundPivot(pivot uint64, results []*fetchResult) (p *fetchResult, pre
 		}
 	}
 	return p, prep, before, after
-}
-func (d *Downloader) syncDevoteProtocolState(protocol *devotedb.DevoteProtocol) error {
-	roots := []common.Hash{
-		protocol.CycleHash,
-		protocol.StatsHash,
-	}
-	for _, root := range roots {
-		if err := d.syncDevote(root).Wait(); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func (d *Downloader) commitFastSyncData(results []*fetchResult, stateSync *stateSync) error {

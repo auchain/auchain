@@ -17,7 +17,7 @@
 // Package bind generates Ethereum contract Go bindings.
 //
 // Detailed usage document and tutorial available on the go-auc Wiki page:
-// https://github.com/auc/go-auc/wiki/Native-DApps:-Go-bindings-to-Ethereum-contracts
+// https://github.com/auchain/auchain/wiki/Native-DApps:-Go-bindings-to-Ethereum-contracts
 package bind
 
 import (

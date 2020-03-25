@@ -24,11 +24,10 @@ import (
 
 	"github.com/auchain/auchain/common"
 	"github.com/auchain/auchain/consensus"
-	"github.com/auchain/auchain/consensus/devote"
+	"github.com/auchain/auchain/consensus/circum"
 	"github.com/auchain/auchain/core"
 	"github.com/auchain/auchain/core/state"
 	"github.com/auchain/auchain/core/types"
-	"github.com/auchain/auchain/core/types/devotedb"
 	"github.com/auchain/auchain/core/vm"
 	"github.com/auchain/auchain/ethdb"
 	"github.com/auchain/auchain/event"
@@ -80,8 +79,6 @@ type Work struct {
 	txs       []*types.Transaction
 	receipts  []*types.Receipt
 	createdAt time.Time
-
-	devoteDB *devotedb.DevoteDB
 }
 
 type Result struct {
@@ -262,19 +259,19 @@ func (self *worker) seal(work *Work) {
 }
 
 func (self *worker) mine(now int64) {
-	engine, ok := self.engine.(*devote.Devote)
+	engine, ok := self.engine.(*circum.Circum)
 	if !ok {
-		log.Error("Only the devote engine was allowed")
+		log.Error("Only the circum engine was allowed")
 		return
 	}
-	engine.SetDevoteDB(self.chainDb)
+	engine.SetCircumDB(self.chainDb)
 	err := engine.CheckWitness(self.chain.CurrentBlock(), now)
 	if err != nil {
 		switch err {
-		case devote.ErrWaitForPrevBlock,
-			devote.ErrMinerFutureBlock,
-			devote.ErrInvalidBlockWitness,
-			devote.ErrInvalidMinerBlockTime:
+		case circum.ErrWaitForPrevBlock,
+			circum.ErrMinerFutureBlock,
+			circum.ErrInvalidBlockWitness,
+			circum.ErrInvalidMinerBlockTime:
 			log.Debug("Failed to miner the block, while ", "err", err)
 		default:
 			log.Error("Failed to miner the block", "err", err)
@@ -450,10 +447,6 @@ func (self *worker) makeCurrent(parent *types.Block, header *types.Header) error
 	if err != nil {
 		return err
 	}
-	devoteDB, err := devotedb.NewDevoteByProtocol(devotedb.NewDatabase(self.chainDb), parent.Header().Protocol)
-	if err != nil {
-		return err
-	}
 	work := &Work{
 		config:    self.config,
 		signer:    types.NewEIP155Signer(self.config.ChainID),
@@ -463,7 +456,6 @@ func (self *worker) makeCurrent(parent *types.Block, header *types.Header) error
 		uncles:    set.New(),
 		header:    header,
 		createdAt: time.Now(),
-		devoteDB:  devoteDB,
 	}
 
 	// when 08 is processed ancestors contain 07 (quick block)
@@ -542,8 +534,8 @@ func (self *worker) commitNewWork() (*Work, error) {
 	var (
 		uncles    []*types.Header
 	)
-	if engine, ok := self.engine.(*devote.Devote); ok{
-		engine.SetDevoteDB(self.chainDb)
+	if engine, ok := self.engine.(*circum.Circum); ok{
+		engine.SetCircumDB(self.chainDb)
 	}
 
 	// Create the new block to seal with the consensus engine
@@ -676,12 +668,10 @@ func (env *Work) commitTransactions(mux *event.TypeMux, txs *types.TransactionsB
 
 func (env *Work) commitTransaction(tx *types.Transaction, bc *core.BlockChain, coinbase common.Address, gp *core.GasPool) (error, []*types.Log) {
 	snap := env.state.Snapshot()
-	devoteSnap := env.devoteDB.Snapshot()
 
 	receipt, _, err := core.ApplyTransaction(env.config, bc, &coinbase, gp, env.state, env.header, tx, &env.header.GasUsed, vm.Config{})
 	if err != nil {
 		env.state.RevertToSnapshot(snap)
-		env.devoteDB.RevertToSnapShot(devoteSnap)
 		return err, nil
 	}
 	env.txs = append(env.txs, tx)

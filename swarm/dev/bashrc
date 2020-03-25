@@ -1,4 +1,4 @@
-export ROOT="${GOPATH}/src/github.com/auc/go-auc"
+export ROOT="${GOPATH}/src/github.com/auchain/auchain"
 export PATH="${ROOT}/swarm/dev/bin:${PATH}"
 
 cd "${ROOT}/swarm/dev"

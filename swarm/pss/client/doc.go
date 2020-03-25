@@ -28,11 +28,11 @@
 //  	"context"
 //  	"fmt"
 //  	"os"
-//  	pss "github.com/auc/go-auc/swarm/pss/client"
-//  	"github.com/auc/go-auc/p2p/protocols"
-//  	"github.com/auc/go-auc/p2p"
-//  	"github.com/auc/go-auc/swarm/pot"
-//  	"github.com/auc/go-auc/swarm/log"
+//  	pss "github.com/auchain/auchain/swarm/pss/client"
+//  	"github.com/auchain/auchain/p2p/protocols"
+//  	"github.com/auchain/auchain/p2p"
+//  	"github.com/auchain/auchain/swarm/pot"
+//  	"github.com/auchain/auchain/swarm/log"
 //  )
 //
 //  type FooMsg struct {

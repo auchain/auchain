@@ -20,7 +20,7 @@ package eth
 import (
 	"errors"
 	"fmt"
-	"github.com/auchain/auchain/consensus/devote"
+	"github.com/auchain/auchain/consensus/circum"
 	"math/big"
 	"runtime"
 	"sync"
@@ -187,9 +187,9 @@ func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 	}
 	eth.protocolManager.mm = eth.masternodeManager
 
-	if engine, ok := eth.engine.(*devote.Devote); ok {
+	if engine, ok := eth.engine.(*circum.Circum); ok {
 		engine.Masternodes(eth.masternodeManager.MasternodeList)
-		engine.SetDevoteDB(chainDb)
+		engine.SetCircumDB(chainDb)
 	}
 
 	eth.miner = miner.New(eth, eth.chainConfig, eth.EventMux(), eth.engine)
@@ -237,8 +237,8 @@ func CreateDB(ctx *node.ServiceContext, config *Config, name string) (ethdb.Data
 // CreateConsensusEngine creates the required type of consensus engine instance for an Ethereum service
 func CreateConsensusEngine(ctx *node.ServiceContext, chainConfig *params.ChainConfig, config *ethash.Config, notify []string, noverify bool, db ethdb.Database) consensus.Engine {
 	// If Masternode is requested, set it up
-	if chainConfig.Devote != nil {
-		return devote.NewDevote(chainConfig.Devote, db)
+	if chainConfig.Circum != nil {
+		return circum.NewCircum(chainConfig.Circum, db)
 	}
 	// If proof-of-authority is requested, set it up
 	if chainConfig.Clique != nil {
@@ -455,8 +455,8 @@ func (s *Ethereum) StartMining(threads int) error {
 			return fmt.Errorf("Witness missing: %v", err)
 		}
 		// no need to verify
-		if devote, ok := s.engine.(*devote.Devote); ok {
-			devote.Authorize(witness, s.masternodeManager.SignHash)
+		if circum, ok := s.engine.(*circum.Circum); ok {
+			circum.Authorize(witness, s.masternodeManager.SignHash)
 		}
 		if clique, ok := s.engine.(*clique.Clique); ok {
 			wallet, err := s.accountManager.Find(accounts.Account{Address: eb})

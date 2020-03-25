@@ -208,11 +208,11 @@ func TestModePutUpload_parallel(t *testing.T) {
 //
 // Measurements on MacBook Pro (Retina, 15-inch, Mid 2014)
 //
-// # go test -benchmem -run=none github.com/auc/go-auc/swarm/storage/localstore -bench BenchmarkPutUpload -v
+// # go test -benchmem -run=none github.com/auchain/auchain/swarm/storage/localstore -bench BenchmarkPutUpload -v
 //
 // goos: darwin
 // goarch: amd64
-// pkg: github.com/auc/go-auc/swarm/storage/localstore
+// pkg: github.com/auchain/auchain/swarm/storage/localstore
 // BenchmarkPutUpload/count_100_parallel_1-8         	     300	   5107704 ns/op	 2081461 B/op	    2374 allocs/op
 // BenchmarkPutUpload/count_100_parallel_2-8         	     300	   5411742 ns/op	 2081608 B/op	    2364 allocs/op
 // BenchmarkPutUpload/count_100_parallel_4-8         	     500	   3704964 ns/op	 2081696 B/op	    2324 allocs/op

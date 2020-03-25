@@ -45,9 +45,8 @@ var TrustedCheckpoints = map[common.Hash]*TrustedCheckpoint{
 }
 
 var (
-	DevoteChainConfig = &ChainConfig{
+	CircumChainConfig = &ChainConfig{
 		ChainID:        big.NewInt(101),
-		EtherzeroBlock: big.NewInt(0),
 		HomesteadBlock: big.NewInt(0),
 		DAOForkBlock:   nil,
 		DAOForkSupport: false,
@@ -56,10 +55,9 @@ var (
 		EIP155Block:    big.NewInt(0),
 		EIP158Block:    big.NewInt(0),
 		ByzantiumBlock: big.NewInt(0),
-		DevoteBlock:    big.NewInt(0),
-		Devote: &DevoteConfig{
+		CircumBlock:    big.NewInt(0),
+		Circum: &CircumConfig{
 			Period: 3,
-			Epoch:  600,
 			Witnesses: []string{
 			},
 		},
@@ -102,7 +100,6 @@ var (
 	// RinkebyChainConfig contains the chain parameters to run a node on the Rinkeby test network.
 	RinkebyChainConfig = &ChainConfig{
 		ChainID:             big.NewInt(4),
-		EtherzeroBlock:      big.NewInt(1),
 		HomesteadBlock:      big.NewInt(1),
 		DAOForkBlock:        nil,
 		DAOForkSupport:      true,
@@ -116,7 +113,7 @@ var (
 			Period: 15,
 			Epoch:  30000,
 		},
-		Devote: &DevoteConfig{
+		Circum: &CircumConfig{
 			Witnesses: []string{
 				"c34c967d399d38f0",
 				"ffb14ca8e65770b4",
@@ -166,16 +163,16 @@ var (
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0),nil, nil, nil, new(EthashConfig), nil, nil}
+	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0),nil, nil, nil, new(EthashConfig), nil, nil}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0),nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}, &DevoteConfig{Period: 1, Epoch: 600}}
+	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0),nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}, &CircumConfig{Period: 3}}
 
-	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0),big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, new(EthashConfig),nil,nil}
+	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, new(EthashConfig),nil,nil}
 	TestRules       = TestChainConfig.Rules(new(big.Int))
 )
 
@@ -200,7 +197,6 @@ type ChainConfig struct {
 	ChainID *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
 
 	HomesteadBlock *big.Int `json:"homesteadBlock,omitempty"` // Homestead switch block (nil = no fork, 0 = already homestead)
-	EtherzeroBlock *big.Int `json:"EtherzeroBlock,omitempty"` // Etherzero switch block (nil = no fork, 0 = already on Etherzero)
 
 	DAOForkBlock   *big.Int `json:"daoForkBlock,omitempty"`   // TheDAO hard-fork switch block (nil = no fork)
 	DAOForkSupport bool     `json:"daoForkSupport,omitempty"` // Whether the nodes supports or opposes the DAO hard-fork
@@ -216,12 +212,12 @@ type ChainConfig struct {
 	ConstantinopleBlock *big.Int `json:"constantinopleBlock,omitempty"` // Constantinople switch block (nil = no fork, 0 = already activated)
 	PetersburgBlock     *big.Int `json:"petersburgBlock,omitempty"`     // Petersburg switch block (nil = same as Constantinople)
 	EWASMBlock          *big.Int `json:"ewasmBlock,omitempty"`          // EWASM switch block (nil = no fork, 0 = already activated)
-	DevoteBlock    *big.Int `json:"devoteBlock,omitempty"`    // Devote switch block (nil = no fork, 0 = already on byzantium)
+	CircumBlock    *big.Int `json:"circumBlock,omitempty"`    // Circum switch block (nil = no fork, 0 = already on byzantium)
 
 	// Various consensus engines
 	Ethash *EthashConfig `json:"ethash,omitempty"`
 	Clique *CliqueConfig `json:"clique,omitempty"`
-	Devote *DevoteConfig `json:"devote,omitempty"`
+	Circum *CircumConfig `json:"circum,omitempty"`
 }
 
 // EthashConfig is the consensus engine configs for proof-of-work based sealing.
@@ -243,16 +239,15 @@ func (c *CliqueConfig) String() string {
 	return "clique"
 }
 
-// MasternodeConfig is the consensus engine configs for devote + delegated proof-of-stake based sealing.
-type DevoteConfig struct {
+// MasternodeConfig is the consensus engine configs for circum + delegated proof-of-stake based sealing.
+type CircumConfig struct {
 	Period    uint64   `json:"period"`    // Number of seconds between blocks to enforce
-	Epoch     uint64   `json:"epoch"`     // Epoch length to reset votes and checkpoint
 	Witnesses []string `json:"witnesses"` // Genesis witness list
 }
 
 // String implements the stringer interface, returning the consensus engine details.
-func (d *DevoteConfig) String() string {
-	return "devote"
+func (d *CircumConfig) String() string {
+	return "circum"
 }
 
 // String implements the fmt.Stringer interface.
@@ -263,14 +258,14 @@ func (c *ChainConfig) String() string {
 		engine = c.Ethash
 	case c.Clique != nil:
 		engine = c.Clique
-	case c.Devote != nil:
-		engine = c.Devote
+	case c.Circum != nil:
+		engine = c.Circum
 	default:
 		engine = "unknown"
 	}
-	return fmt.Sprintf("{ChainID: %v Devote: %v Engine: %v}",
+	return fmt.Sprintf("{ChainID: %v Circum: %v Engine: %v}",
 		c.ChainID,
-		c.DevoteBlock,
+		c.CircumBlock,
 		engine,
 	)
 }
@@ -280,9 +275,9 @@ func (c *ChainConfig) IsHomestead(num *big.Int) bool {
 	return isForked(c.HomesteadBlock, num)
 }
 
-// IsDevote returns whether num is either equal to the Devote fork block or greater.
-func (c *ChainConfig) IsDevote(num *big.Int) bool {
-	return isForked(c.DevoteBlock, num)
+// IsCircum returns whether num is either equal to the Circum fork block or greater.
+func (c *ChainConfig) IsCircum(num *big.Int) bool {
+	return isForked(c.CircumBlock, num)
 }
 
 // IsDAOFork returns whether num is either equal to the DAO fork block or greater.
@@ -308,11 +303,6 @@ func (c *ChainConfig) IsEIP158(num *big.Int) bool {
 // IsByzantium returns whether num is either equal to the Byzantium fork block or greater.
 func (c *ChainConfig) IsByzantium(num *big.Int) bool {
 	return isForked(c.ByzantiumBlock, num)
-}
-
-// IsEtherzero returns whether num is either equal to the Etherzero masternode fork block or greater.
-func (c *ChainConfig) IsEtherzero(num *big.Int) bool {
-	return isForked(c.EtherzeroBlock, num)
 }
 
 // IsConstantinople returns whether num is either equal to the Constantinople fork block or greater.
@@ -394,8 +384,8 @@ func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, head *big.Int) *Confi
 	if isForkIncompatible(c.ByzantiumBlock, newcfg.ByzantiumBlock, head) {
 		return newCompatError("Byzantium fork block", c.ByzantiumBlock, newcfg.ByzantiumBlock)
 	}
-	if isForkIncompatible(c.DevoteBlock, newcfg.DevoteBlock, head) {
-		return newCompatError("Devote fork block", c.DevoteBlock, newcfg.DevoteBlock)
+	if isForkIncompatible(c.CircumBlock, newcfg.CircumBlock, head) {
+		return newCompatError("Circum fork block", c.CircumBlock, newcfg.CircumBlock)
 	}
 	if isForkIncompatible(c.ConstantinopleBlock, newcfg.ConstantinopleBlock, head) {
 		return newCompatError("Constantinople fork block", c.ConstantinopleBlock, newcfg.ConstantinopleBlock)
@@ -472,7 +462,7 @@ func (err *ConfigCompatError) Error() string {
 type Rules struct {
 	ChainID                                     *big.Int
 	IsHomestead, IsEIP150, IsEIP155, IsEIP158 bool
-	IsByzantium, IsDevote, IsConstantinople,IsPetersburg   bool
+	IsByzantium, IsCircum, IsConstantinople,IsPetersburg   bool
 }
 
 // Rules ensures c's ChainID is not nil.
@@ -488,7 +478,7 @@ func (c *ChainConfig) Rules(num *big.Int) Rules {
 		IsEIP155:         c.IsEIP155(num),
 		IsEIP158:         c.IsEIP158(num),
 		IsByzantium:      c.IsByzantium(num),
-		IsDevote:         c.IsDevote(num),
+		IsCircum:         c.IsCircum(num),
 		IsConstantinople: c.IsConstantinople(num),
 		IsPetersburg:     c.IsPetersburg(num),
 	}

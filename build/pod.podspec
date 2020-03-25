@@ -2,12 +2,12 @@ Pod::Spec.new do |spec|
   spec.name         = 'Geth'
   spec.version      = '{{.Version}}'
   spec.license      = { :type => 'GNU Lesser General Public License, Version 3.0' }
-  spec.homepage     = 'https://github.com/auc/go-auc'
+  spec.homepage     = 'https://github.com/auchain/auchain'
   spec.authors      = { {{range .Contributors}}
 		'{{.Name}}' => '{{.Email}}',{{end}}
 	}
   spec.summary      = 'iOS Ethereum Client'
-  spec.source       = { :git => 'https://github.com/auc/go-auc.git', :commit => '{{.Commit}}' }
+  spec.source       = { :git => 'https://github.com/auchain/auchain.git', :commit => '{{.Commit}}' }
 
 	spec.platform = :ios
   spec.ios.deployment_target  = '9.0'

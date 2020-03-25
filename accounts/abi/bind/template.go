@@ -68,12 +68,12 @@ import (
 	"math/big"
 	"strings"
 
-	ethereum "github.com/auc/go-auc"
-	"github.com/auc/go-auc/accounts/abi"
-	"github.com/auc/go-auc/accounts/abi/bind"
-	"github.com/auc/go-auc/common"
-	"github.com/auc/go-auc/core/types"
-	"github.com/auc/go-auc/event"
+	ethereum "github.com/auchain/auchain"
+	"github.com/auchain/auchain/accounts/abi"
+	"github.com/auchain/auchain/accounts/abi/bind"
+	"github.com/auchain/auchain/common"
+	"github.com/auchain/auchain/core/types"
+	"github.com/auchain/auchain/event"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

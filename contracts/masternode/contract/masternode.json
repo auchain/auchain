@@ -12,7 +12,7 @@
       },
       {
         "name": "ref",
-        "type": "address"
+        "type": "bytes8"
       }
     ],
     "name": "register",
@@ -235,6 +235,37 @@
       {
         "name": "myExpiredNodes",
         "type": "uint256"
+      },
+      {
+        "name": "referrers1",
+        "type": "uint256"
+      },
+      {
+        "name": "referrers2",
+        "type": "uint256"
+      },
+      {
+        "name": "referrersTotal",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "id",
+        "type": "bytes8"
+      }
+    ],
+    "name": "getReferrers",
+    "outputs": [
+      {
+        "name": "data",
+        "type": "address[6]"
       }
     ],
     "payable": false,
@@ -254,6 +285,33 @@
       }
     ],
     "name": "getRefIds",
+    "outputs": [
+      {
+        "name": "length",
+        "type": "uint256"
+      },
+      {
+        "name": "data",
+        "type": "bytes8[5]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "name": "startPos",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRefIds2",
     "outputs": [
       {
         "name": "length",
@@ -444,6 +502,29 @@
       },
       {
         "name": "referrer",
+        "type": "bytes8"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes8"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "referrers",
+    "outputs": [
+      {
+        "name": "",
         "type": "address"
       }
     ],
@@ -463,7 +544,53 @@
         "type": "uint256"
       }
     ],
-    "name": "refIdsOf",
+    "name": "referrersCount",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "refIdsOf1",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes8"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "refIdsOf2",
     "outputs": [
       {
         "name": "",

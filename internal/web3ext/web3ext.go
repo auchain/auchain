@@ -31,7 +31,7 @@ var Modules = map[string]string{
 	"shh":        Shh_JS,
 	"swarmfs":    SWARMFS_JS,
 	"txpool":     TxPool_JS,
-	"devote":     Devote_JS,
+	"circum":     Circum_JS,
 }
 
 const Chequebook_JS = `
@@ -714,31 +714,31 @@ web3._extend({
    ]
 });
 `
-const Devote_JS = `
+const Circum_JS = `
 web3._extend({
-	property: 'devote',
+	property: 'circum',
 	methods: [
 		new web3._extend.Method({
 			name: 'getSigners',
-			call: 'devote_getSigners',
+			call: 'circum_getSigners',
 			params: 1,
 			inputFormatter: [web3._extend.formatters.inputBlockNumberFormatter]
 		}),
 		new web3._extend.Method({
 			name: 'getSignersByEpoch',
-			call: 'devote_getSignersByEpoch',
+			call: 'circum_getSignersByEpoch',
 			params: 1,
 			inputFormatter: [web3._extend.formatters.uint64]
 		}),
 		new web3._extend.Method({
 			name: 'getConfirmedBlockNumber',
-			call: 'devote_getConfirmedBlockNumber',
+			call: 'circum_getConfirmedBlockNumber',
 			params: 0,
 			outputFormatter: web3._extend.utils.toBigNumber
 		}),
 		new web3._extend.Method({
 			name: 'getSnapshot',
-			call: 'devote_getSnapshot',
+			call: 'circum_getSnapshot',
 			params: 1,
 			inputFormatter: [web3._extend.formatters.inputBlockNumberFormatter]
 		}),

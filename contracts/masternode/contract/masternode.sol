@@ -5,7 +5,7 @@ contract Masternode {
     uint public constant nodeCost = 10000 * 10**18;
     uint public constant baseCost = 10**18;
     uint public constant minBlockTimeout = 800;
-    uint public constant miningPeriod = 86400 / 3 * 365;
+    uint public constant miningPeriod = 86400 / 3 * 600;
 
     bytes8 public lastId;
     bytes8 public lastOnlineId;
@@ -20,33 +20,34 @@ contract Masternode {
         bytes8 nextId;
         bytes8 preOnlineId;
         bytes8 nextOnlineId;
-        address payable coinbase;
+        address coinbase;
         uint status;
         uint blockEnd;
         uint blockRegister;
         uint blockLastPing;
         uint blockOnline;
         uint blockOnlineAcc;
-        address referrer;
+        bytes8 referrer;
     }
 
     mapping (bytes8 => node) public nodes;
     mapping (address => bytes8) nodeAddressToId;
     mapping (address => bytes8[]) public idsOf;
-    mapping (address => bytes8[]) public refIdsOf;
+    mapping (address => bytes8[]) public refIdsOf1;
+    mapping (address => bytes8[]) public refIdsOf2;
+    mapping (bytes8 => address[]) public referrers;
     mapping (address => uint) public expiredNodesOf;
 
     event join(bytes8 id, address addr);
     event quit(bytes8 id, address addr);
 
-    function register(bytes32 id1, bytes32 id2, address ref) public payable{
+    function register(bytes32 id1, bytes32 id2, bytes8 ref) public payable{
         bytes8 id = bytes8(id1);
         require(
             bytes8(0) != id &&
-            bytes32(0) != id1 &&
             bytes32(0) != id2 &&
             bytes32(0) == nodes[id].id1 &&
-            address(0) != ref &&
+            bytes32(0) != nodes[ref].id1 &&
             msg.value == nodeCost
         );
         bytes32[2] memory input;
@@ -75,8 +76,20 @@ contract Masternode {
         }
         lastId = id;
         idsOf[msg.sender].push(id);
-        refIdsOf[ref].push(id);
         countTotalNode += 1;
+        // set referrers
+        bytes8 lastRid = ref;
+        for(uint i = 0; i < 6; i++) {
+            address referrerCoinbase = nodes[lastRid].coinbase;
+            referrers[id].push(referrerCoinbase);
+            if(i == 0){
+                refIdsOf1[referrerCoinbase].push(id);
+            }else if(i == 1){
+                refIdsOf2[referrerCoinbase].push(id);
+            }
+            lastRid = nodes[lastRid].referrer;
+            if (lastRid == bytes8(0)) break;
+        }
         account.transfer(baseCost);
         emit join(id, msg.sender);
     }
@@ -106,7 +119,7 @@ contract Masternode {
         require(account != address(0));
         nodeAddressToId[account] = id;
         uint endBlock = nodes[oldId].blockEnd;
-        address ref = nodes[oldId].referrer;
+        bytes8 ref = nodes[oldId].referrer;
         nodes[oldId].blockEnd = block.number;
         nodes[oldId].status = 3;
         nodes[id] = node(
@@ -125,8 +138,20 @@ contract Masternode {
         }
         lastId = id;
         idsOf[msg.sender].push(id);
-        refIdsOf[ref].push(id);
         countTotalNode += 1;
+        // set referrers
+        bytes8 lastRid = ref;
+        for(uint i = 0; i < 6; i++) {
+            address referrerCoinbase = nodes[lastRid].coinbase;
+            referrers[id].push(referrerCoinbase);
+            if(i == 0){
+                refIdsOf1[referrerCoinbase].push(id);
+            }else if(i == 1){
+                refIdsOf2[referrerCoinbase].push(id);
+            }
+            lastRid = nodes[lastRid].referrer;
+            if (lastRid == bytes8(0)) break;
+        }
         account.transfer(baseCost);
         emit quit(oldId, msg.sender);
         emit join(id, msg.sender);
@@ -229,7 +254,9 @@ contract Masternode {
         uint onlineNodes,
         uint expiredNodes,
         uint myValidNodes,
-        uint myExpiredNodes
+        uint myExpiredNodes,
+        uint referrers1,
+        uint referrers2
     )
     {
         lockedBalance = address(this).balance / (10**18);
@@ -239,6 +266,8 @@ contract Masternode {
         expiredNodes = countExpiredNode;
         myExpiredNodes = expiredNodesOf[addr];
         myValidNodes = idsOf[addr].length - myExpiredNodes;
+        referrers1 = refIdsOf1[addr].length;
+        referrers2 = refIdsOf2[addr].length;
     }
 
     function getIds(address addr, uint startPos) public view
@@ -252,10 +281,28 @@ contract Masternode {
 
     function getRefIds(address addr, uint startPos) public view
     returns (uint length, bytes8[5] memory data) {
-        bytes8[] memory myIds = refIdsOf[addr];
+        bytes8[] memory myIds = refIdsOf1[addr];
         length = uint(myIds.length);
         for(uint i = 0; i < 5 && (i+startPos) < length; i++) {
             data[i] = myIds[i+startPos];
+        }
+    }
+
+    function getRefIds2(address addr, uint startPos) public view
+    returns (uint length, bytes8[5] memory data) {
+        bytes8[] memory myIds = refIdsOf2[addr];
+        length = uint(myIds.length);
+        for(uint i = 0; i < 5 && (i+startPos) < length; i++) {
+            data[i] = myIds[i+startPos];
+        }
+    }
+
+    function getReferrers(bytes8 id) public view
+    returns (address[6] memory data) {
+        address[] memory refs = referrers[id];
+        uint length = uint(refs.length);
+        for(uint i = 0; i < length; i++) {
+            data[i] = refs[i];
         }
     }
 

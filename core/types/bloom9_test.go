@@ -54,7 +54,7 @@ func TestBloom(t *testing.T) {
 import (
 	"testing"
 
-	"github.com/auc/go-auc/core/state"
+	"github.com/auchain/auchain/core/state"
 )
 
 func TestBloom9(t *testing.T) {

@@ -27,6 +27,8 @@ import (
 	"github.com/auchain/auchain/p2p/discv5"
 	"github.com/auchain/auchain/p2p/enode"
 	"math/big"
+	"sort"
+	"encoding/binary"
 )
 
 type MasternodeData struct {
@@ -108,7 +110,7 @@ func GetIdsByBlockNumber(contract *contract.Contract, blockNumber *big.Int) ([]s
 
 	ids, err := getOnlineIds(contract, blockNumber)
 	if err == nil && len(ids) > 20 {
-		return ids, nil
+		return sortIds(ids), nil
 	} else if err != nil {
 		fmt.Println("getOnlineIds error:", err)
 	}
@@ -117,7 +119,7 @@ func GetIdsByBlockNumber(contract *contract.Contract, blockNumber *big.Int) ([]s
 	if err != nil {
 		fmt.Println("getAllIds error:", err)
 	}
-	return ids, err
+	return sortIds(ids), err
 }
 
 func getOnlineIds(contract *contract.Contract, blockNumber *big.Int) ([]string, error) {
@@ -223,4 +225,48 @@ func GetMasternodeContext(opts *bind.CallOpts, contract *contract.Contract, id [
 		preOnline:  data.PreOnlineId,
 		nextOnline: data.NextOnlineId,
 	}, nil
+}
+
+type sortableId struct {
+	id string
+	score uint64
+}
+
+type sortableIds []*sortableId
+
+func (p sortableIds) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
+func (p sortableIds) Len() int      { return len(p) }
+func (p sortableIds) Less(i, j int) bool {
+	if p[i].score < p[j].score {
+		return false
+	} else if p[i].score > p[j].score {
+		return true
+	} else {
+		return p[i].id > p[j].id
+	}
+}
+
+func sortIds (ids []string) ([]string) {
+	scores := calculateScores(ids)
+	sortedIds := sortableIds{}
+	for i, s := range scores {
+		sortedIds = append(sortedIds, &sortableId{id: i, score: s})
+	}
+	sort.Sort(sortedIds)
+	returnIds := []string{}
+	for _, node := range sortedIds {
+		returnIds = append(returnIds, node.id)
+		//fmt.Println("sortIds", node.id, node.score)
+
+	}
+	return returnIds
+}
+
+func calculateScores(ids []string) (map[string]uint64) {
+	list := make(map[string]uint64)
+	for i := 0; i < len(ids); i++ {
+		id := ids[i]
+		list[id] = binary.BigEndian.Uint64(common.Hex2Bytes(id))
+	}
+	return list
 }

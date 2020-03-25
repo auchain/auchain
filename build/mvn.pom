@@ -11,7 +11,7 @@
 
   <name>Android Ethereum Client</name>
   <description>Android port of the go-ethereum libraries and node</description>
-  <url>https://github.com/auc/go-auc</url>
+  <url>https://github.com/auchain/auchain</url>
   <inceptionYear>2015</inceptionYear>
 
   <licenses>
@@ -48,10 +48,10 @@
 
   <issueManagement>
     <system>GitHub Issues</system>
-    <url>https://github.com/auc/go-auc/issues/</url>
+    <url>https://github.com/auchain/auchain/issues/</url>
   </issueManagement>
 
   <scm>
-    <url>https://github.com/auc/go-auc</url>
+    <url>https://github.com/auchain/auchain</url>
   </scm>
 </project>

@@ -1436,7 +1436,7 @@ func TestEIP161AccountRemoval(t *testing.T) {
 // tests that under weird reorg conditions the blockchain and its internal header-
 // chain return the same latest block/header.
 //
-// https://github.com/auc/go-auc/pull/15941
+// https://github.com/auchain/auchain/pull/15941
 func TestBlockchainHeaderchainReorgConsistency(t *testing.T) {
 	// Generate a canonical chain to act as the main dataset
 	engine := ethash.NewFaker()
@@ -1695,8 +1695,8 @@ func BenchmarkBlockChain_1x1000Executions(b *testing.B) {
 // overtake the 'canon' chain until after it's passed canon by about 200 blocks.
 //
 // Details at:
-//  - https://github.com/auc/go-auc/issues/18977
-//  - https://github.com/auc/go-auc/pull/18988
+//  - https://github.com/auchain/auchain/issues/18977
+//  - https://github.com/auchain/auchain/pull/18988
 func TestLowDiffLongChain(t *testing.T) {
 	// Generate a canonical chain to act as the main dataset
 	engine := ethash.NewFaker()

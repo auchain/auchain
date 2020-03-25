@@ -18,8 +18,6 @@ package core
 
 import (
 	"fmt"
-	"github.com/auchain/auchain/core/types/devotedb"
-	"log"
 
 	"github.com/auchain/auchain/consensus"
 	"github.com/auchain/auchain/core/state"
@@ -93,19 +91,6 @@ func (v *BlockValidator) ValidateState(block, parent *types.Block, statedb *stat
 	// an error if they don't match.
 	if root := statedb.IntermediateRoot(v.config.IsEIP158(header.Number)); header.Root != root {
 		return fmt.Errorf("invalid merkle root (remote: %x local: %x)", header.Root, root)
-	}
-	return nil
-}
-
-func (v *BlockValidator) ValidateDevoteState(block *types.Block, db *devotedb.DevoteDB) error {
-	header := block.Header()
-	localRoot := db.Protocol().Root()
-	remoteRoot := header.Protocol.Root()
-	if remoteRoot != localRoot {
-		log.Printf("StatsHash block hash:%x header: hash:%x \n", db.Protocol().StatsHash, header.Protocol.StatsHash)
-		log.Printf("Cycle block hash:%x header:  hash:%x \n", db.Protocol().CycleHash, header.Protocol.CycleHash)
-		log.Printf("invalid devote blockNumber %d ,root (remote: %x local: %x)", block.Number(), remoteRoot, localRoot)
-		return fmt.Errorf("invalid devote root (remote: %x local: %x)", remoteRoot, localRoot)
 	}
 	return nil
 }

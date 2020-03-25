@@ -20,8 +20,7 @@ package core
 import (
 	"errors"
 	"fmt"
-	"github.com/auchain/auchain/consensus/devote"
-	"github.com/auchain/auchain/core/types/devotedb"
+	"github.com/auchain/auchain/consensus/circum"
 	"io"
 	"math/big"
 	mrand "math/rand"
@@ -1221,21 +1220,9 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, []
 		proctime := time.Since(start)
 
 		// Validate validator
-		devoteEngine, isDevote := bc.engine.(*devote.Devote)
-		if isDevote {
-			mdb, err := devotedb.NewDevoteByProtocol(devotedb.NewDatabase(bc.db), block.Header().Protocol)
-			if err != nil {
-				return it.index, events, coalescedLogs, err
-			}
-
-			// Validate the devote state using the default validator
-			err = bc.Validator().ValidateDevoteState(block, mdb)
-			if err != nil {
-				bc.reportBlock(block, receipts, err)
-				return it.index, events, coalescedLogs, err
-			}
-
-			err = devoteEngine.VerifySeal(bc, block.Header())
+		circumEngine, isCircum := bc.engine.(*circum.Circum)
+		if isCircum {
+			err = circumEngine.VerifySeal(bc, block.Header())
 			if err != nil {
 				bc.reportBlock(block, receipts, err)
 				return it.index, events, coalescedLogs, err

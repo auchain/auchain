@@ -41,7 +41,7 @@ var bugCommand = cli.Command{
 	Category:  "MISCELLANEOUS COMMANDS",
 }
 
-const issueURL = "https://github.com/auc/go-auc/issues/new"
+const issueURL = "https://github.com/auchain/auchain/issues/new"
 
 // reportBug reports a bug by opening a new URL to the go-auc GH issue
 // tracker and setting default values as the issue body.

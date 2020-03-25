@@ -19,7 +19,6 @@ package core
 import (
 	"github.com/auchain/auchain/core/state"
 	"github.com/auchain/auchain/core/types"
-	"github.com/auchain/auchain/core/types/devotedb"
 	"github.com/auchain/auchain/core/vm"
 )
 
@@ -34,9 +33,6 @@ type Validator interface {
 	// ValidateState validates the given statedb and optionally the receipts and
 	// gas used.
 	ValidateState(block, parent *types.Block, state *state.StateDB, receipts types.Receipts, usedGas uint64) error
-
-	// ValidateMPoSState validates the given MPoS state
-	ValidateDevoteState(block *types.Block, db *devotedb.DevoteDB) error
 }
 
 // Processor is an interface for processing blocks using a given initial state.

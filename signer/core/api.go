@@ -518,7 +518,7 @@ func (api *SignerAPI) SignTransaction(ctx context.Context, args SendTxArgs, meth
 //
 // The key used to calculate the signature is decrypted with the given password.
 //
-// https://github.com/auc/go-auc/wiki/Management-APIs#personal_sign
+// https://github.com/auchain/auchain/wiki/Management-APIs#personal_sign
 func (api *SignerAPI) Sign(ctx context.Context, addr common.MixedcaseAddress, data hexutil.Bytes) (hexutil.Bytes, error) {
 	sighash, msg := SignHash(data)
 	// We make the request prior to looking up if we actually have the account, to prevent

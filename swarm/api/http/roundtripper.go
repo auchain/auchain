@@ -25,12 +25,12 @@ import (
 
 /*
 http roundtripper to register for bzz url scheme
-see https://github.com/auc/go-auc/issues/2040
+see https://github.com/auchain/auchain/issues/2040
 Usage:
 
 import (
- "github.com/auc/go-auc/common/httpclient"
- "github.com/auc/go-auc/swarm/api/http"
+ "github.com/auchain/auchain/common/httpclient"
+ "github.com/auchain/auchain/swarm/api/http"
 )
 client := httpclient.New()
 // for (private) swarm proxy running locally

@@ -323,7 +323,7 @@ func TestClientSubscribeClose(t *testing.T) {
 	}
 }
 
-// This test reproduces https://github.com/auc/go-auc/issues/17837 where the
+// This test reproduces https://github.com/auchain/auchain/issues/17837 where the
 // client hangs during shutdown when Unsubscribe races with Client.Close.
 func TestClientCloseUnsubscribeRace(t *testing.T) {
 	service := &NotificationTestService{}

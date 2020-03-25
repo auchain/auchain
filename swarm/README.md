@@ -4,7 +4,7 @@
 
 Swarm is a distributed storage platform and content distribution service, a native base layer service of the ethereum web3 stack. The primary objective of Swarm is to provide a decentralized and redundant store for dapp code and data as well as block chain and state data. Swarm is also set out to provide various base layer services for web3, including node-to-node messaging, media streaming, decentralised database services and scalable state-channel infrastructure for decentralised service economies.
 
-[![Travis](https://travis-ci.org/auc/go-auc.svg?branch=master)](https://travis-ci.org/auc/go-auc)
+[![Travis](https://travis-ci.org/auchain/auchain.svg?branch=master)](https://travis-ci.org/auchain/auchain)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ethersphere/orange-lounge?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Table of Contents
@@ -27,9 +27,9 @@ Swarm is a distributed storage platform and content distribution service, a nati
 
 Building Swarm requires Go (version 1.10 or later).
 
-    go get -d github.com/auc/go-auc
+    go get -d github.com/auchain/auchain
 
-    go install github.com/auc/go-auc/cmd/swarm
+    go install github.com/auchain/auchain/cmd/swarm
 
 ## Running Swarm
 
@@ -90,12 +90,12 @@ Swarm documentation can be found at [https://swarm-guide.readthedocs.io](https:/
 
 We assume that you have Go v1.10 installed, and `GOPATH` is set.
 
-You must have your working copy under `$GOPATH/src/github.com/auc/go-auc`.
+You must have your working copy under `$GOPATH/src/github.com/auchain/auchain`.
 
 Most likely you will be working from your fork of `go-ethereum`, let's say from `github.com/nirname/go-ethereum`. Clone or move your fork into the right place:
 
 ```
-git clone git@github.com:nirname/go-ethereum.git $GOPATH/src/github.com/auc/go-auc
+git clone git@github.com:nirname/go-ethereum.git $GOPATH/src/github.com/auchain/auchain
 ```
 
 
@@ -181,7 +181,7 @@ Once you have `stateth` installed, and you have Docker running locally, you have
 
 1. Run `stateth` and keep it running in the background
 ```
-stateth --rm --grafana-dashboards-folder $GOPATH/src/github.com/auc/go-auc/swarm/grafana_dashboards --influxdb-database metrics
+stateth --rm --grafana-dashboards-folder $GOPATH/src/github.com/auchain/auchain/swarm/grafana_dashboards --influxdb-database metrics
 ```
 
 2. Run `swarm` with at least the following params:
@@ -228,7 +228,7 @@ Please make sure your contributions adhere to our coding guidelines:
  * Code must adhere to the official Go [formatting](https://golang.org/doc/effective_go.html#formatting) guidelines (i.e. uses [gofmt](https://golang.org/cmd/gofmt/)).
  * Code must be documented adhering to the official Go [commentary](https://golang.org/doc/effective_go.html#commentary) guidelines.
  * Pull requests need to be based on and opened against the `master` branch.
- * [Code review guidelines](https://github.com/auc/go-auc/wiki/Code-Review-Guidelines).
+ * [Code review guidelines](https://github.com/auchain/auchain/wiki/Code-Review-Guidelines).
  * Commit messages should be prefixed with the package(s) they modify.
    * E.g. "swarm/fuse: ignore default manifest entry"
 

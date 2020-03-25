@@ -480,8 +480,8 @@ func (s *stateSync) updateStats(written, duplicate, unexpected int, duration tim
 	}
 }
 
-func (d *Downloader) syncDevote(root common.Hash) *stateSync {
-	s := newDevoteSync(d, root)
+func (d *Downloader) syncCircum(root common.Hash) *stateSync {
+	s := newCircumSync(d, root)
 	select {
 	case d.stateSyncStart <- s:
 	case <-d.quitCh:
@@ -491,7 +491,7 @@ func (d *Downloader) syncDevote(root common.Hash) *stateSync {
 	return s
 }
 
-func newDevoteSync(d *Downloader, root common.Hash) *stateSync {
+func newCircumSync(d *Downloader, root common.Hash) *stateSync {
 	return &stateSync{
 		d:       d,
 		sched:   trie.NewSync(root, d.stateDB, nil),

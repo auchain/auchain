@@ -55,7 +55,7 @@ func TestTestMode(t *testing.T) {
 }
 
 // This test checks that cache lru logic doesn't crash under load.
-// It reproduces https://github.com/auc/go-auc/issues/14943
+// It reproduces https://github.com/auchain/auchain/issues/14943
 func TestCacheFileEvict(t *testing.T) {
 	tmpdir, err := ioutil.TempDir("", "ethash-test")
 	if err != nil {

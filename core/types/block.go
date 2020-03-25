@@ -19,7 +19,6 @@ package types
 
 import (
 	"encoding/binary"
-	"github.com/auchain/auchain/core/types/devotedb"
 	"io"
 	"math/big"
 	"sort"
@@ -87,7 +86,6 @@ type Header struct {
 	Nonce       BlockNonce               `json:"nonce"`
 	Signature   common.Hash              `json:"signature"        gencodec:"required"`
 	Witness     string                   `json:"witness"          gencodec:"required"`
-	Protocol    *devotedb.DevoteProtocol `json:"protocol"          gencodec:"required"`
 }
 
 // field type overrides for gencodec
@@ -125,7 +123,6 @@ func (h *Header) HashNoNonce() common.Hash {
 		h.Witness,
 		h.Time,
 		h.Extra,
-		h.Protocol.Root(),
 		h.Signature,
 	})
 }
@@ -332,8 +329,6 @@ func (b *Block) Header() *Header { return CopyHeader(b.header) }
 func (b *Block) Body() *Body { return &Body{b.transactions, b.uncles} }
 
 func (b *Block) Witness() string { return b.header.Witness }
-
-func (b *Block) Protocol() *devotedb.DevoteProtocol { return b.header.Protocol }
 
 func (b *Block) Signaute() common.Hash { return b.header.Signature }
 

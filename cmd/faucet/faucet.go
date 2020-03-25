@@ -449,7 +449,7 @@ func (f *faucet) apiHandler(conn *websocket.Conn) {
 		case *noauthFlag:
 			username, avatar, address, err = authNoAuth(msg.URL)
 		default:
-			err = errors.New("Something funky happened, please open an issue at https://github.com/auc/go-auc/issues")
+			err = errors.New("Something funky happened, please open an issue at https://github.com/auchain/auchain/issues")
 		}
 		if err != nil {
 			if err = sendError(conn, err); err != nil {
