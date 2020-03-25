@@ -302,9 +302,12 @@ func GenesisBlockForTesting(db ethdb.Database, addr common.Address, balance *big
 func DefaultGenesisBlock() *Genesis {
 	alloc := decodePrealloc(mainnetAllocData)
 	alloc[common.BytesToAddress(params.MasterndeContractAddress.Bytes())] = masternodeContractAccount(params.MainnetMasternodes)
-	alloc[common.HexToAddress("0xe1f99A3bA242d01EA0001B77Cd143e595b8743aC")] = GenesisAccount{
+	alloc[common.HexToAddress("0xeD420cfD2252231CD4DA070423E38eB8ae32e52C")] = GenesisAccount{
 		Balance: new(big.Int).Mul(big.NewInt(21e+9), big.NewInt(1e+15)),
 	}
+	//alloc[common.HexToAddress("0xe1f99A3bA242d01EA0001B77Cd143e595b8743aC")] = GenesisAccount{
+	//	Balance: new(big.Int).Mul(big.NewInt(21e+9), big.NewInt(1e+15)),
+	//}
 	config := params.CircumChainConfig
 	var witnesses []string
 	for _, n := range params.MainnetMasternodes {

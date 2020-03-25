@@ -407,7 +407,6 @@ func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
 	nextNth1 := timeDiff / params.Period + uint64(lastNth)
 	nextNth := nextNth1 % uint64(len(nodes))
 
-	fmt.Println(len(nodes), now, lastBlock.Time, timeDiff, lastNth, nextNth1, nextNth)
 	return nodes[nextNth], nil
 }
 
