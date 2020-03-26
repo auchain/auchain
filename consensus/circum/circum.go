@@ -201,7 +201,7 @@ func AccumulateRewards(state *state.StateDB, header *types.Header) {
 }
 
 func (d *Circum) getStableBlockNumber(number *big.Int) (*big.Int) {
-	stableBlockNumber := new(big.Int).Sub(number, big.NewInt(21))
+	stableBlockNumber := new(big.Int).Sub(number, big.NewInt(1))
 	if stableBlockNumber.Cmp(big.NewInt(int64(params.GenesisBlockNumber))) < 0 {
 		return big.NewInt(int64(params.GenesisBlockNumber))
 	}
