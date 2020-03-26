@@ -358,16 +358,35 @@ func (d *Circum) verifyBlockSigner(witness string, header *types.Header) error {
 }
 
 func (d *Circum) checkTime(lastBlock *types.Block, now uint64) error {
-	prevSlot := PrevSlot(now)
-	nextSlot := NextSlot(now)
-	if lastBlock.Time() >= nextSlot {
+	quotients := now / params.Period
+	remainder := now % params.Period
+
+	if lastBlock.Time() >= (quotients * params.Period + 2) {
 		return ErrMinerFutureBlock
 	}
-	// last block was arrived, or time's up
-	if lastBlock.Time() == prevSlot || nextSlot-now <= 1 {
+	if remainder == 1 {
 		return nil
 	}
 	return ErrWaitForPrevBlock
+}
+
+func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
+	quotientsLast := lastBlock.Time / params.Period
+	quotients := now / params.Period
+	if quotientsLast == quotients {
+		return "", fmt.Errorf("[LOOKUP] Invalid Period")
+	}
+	if lastBlock.Time > now {
+		return "", fmt.Errorf("[LOOKUP] Invalid lastBlock.Time")
+	}
+	stableBlockNumber := d.getStableBlockNumber(lastBlock.Number)
+	nodes, err := d.masternodeListFn(stableBlockNumber)
+	if err != nil {
+		return "", fmt.Errorf("Get current masternodes failed from contract: %s", err)
+	}
+	nextNth := quotients % uint64(len(nodes))
+	fmt.Println(now, quotients, nextNth, lastBlock.Witness, len(nodes))
+	return nodes[nextNth], nil
 }
 
 func (d *Circum) CheckWitness(lastBlock *types.Block, now int64) error {
@@ -385,28 +404,6 @@ func (d *Circum) CheckWitness(lastBlock *types.Block, now int64) error {
 	logTime := time.Now().Format("[2006-01-02 15:04:05]")
 	fmt.Printf("%s [%s] 🔨 It's my turn!\n", logTime, witness)
 	return nil
-}
-
-func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
-	stableBlockNumber := d.getStableBlockNumber(lastBlock.Number)
-	nodes, err := d.masternodeListFn(stableBlockNumber)
-	if err != nil {
-		return "", fmt.Errorf("Get current masternodes failed from contract\n%s", err)
-	}
-	nextNth := ((now - params.GenesisTime) / params.Period) % uint64(len(nodes))
-	// fmt.Println(now, params.GenesisTime, (now - params.GenesisTime) / params.Period, nextNth, lastBlock.Witness)
-	nodesmap := make(map[string]int)
-	for i, witness := range nodes {
-		nodesmap[witness] = i
-	}
-	lastNth := nodesmap[lastBlock.Witness]
-	if lastBlock.Time > now {
-		return "", fmt.Errorf("lookup error time")
-	}
-	if nextNth == uint64(lastNth) {
-		return "", ErrWaitForRightTime
-	}
-	return nodes[nextNth], nil
 }
 
 // Seal generates a new block for the given input block with the local miner's
@@ -526,14 +523,6 @@ func (d *Circum) loadConfirmedBlockHeader(chain consensus.ChainReader) (*types.H
 		return nil, ErrNilBlockHeader
 	}
 	return header, nil
-}
-
-func PrevSlot(now uint64) uint64 {
-	return (now - 1) / params.Period * params.Period
-}
-
-func NextSlot(now uint64) uint64 {
-	return ((now + params.Period - 1) / params.Period) * params.Period
 }
 
 // APIs implements consensus.Engine, returning the user facing RPC APIs.
