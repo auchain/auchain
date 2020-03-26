@@ -271,6 +271,7 @@ func (self *worker) mine(now int64) {
 		case circum.ErrWaitForPrevBlock,
 			circum.ErrMinerFutureBlock,
 			circum.ErrInvalidBlockWitness,
+			circum.ErrWaitForRightTime,
 			circum.ErrInvalidMinerBlockTime:
 			log.Debug("Failed to miner the block, while ", "err", err)
 		default:

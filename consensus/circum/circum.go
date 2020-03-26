@@ -85,6 +85,7 @@ var (
 	ErrInvalidBlockWitness      = errors.New("invalid block witness")
 	ErrMinerFutureBlock         = errors.New("miner the future block")
 	ErrWaitForPrevBlock         = errors.New("wait for last block arrived")
+	ErrWaitForRightTime         = errors.New("wait for right time")
 	ErrNilBlockHeader           = errors.New("nil block header returned")
 	ErrMismatchSignerAndWitness = errors.New("mismatch block signer and witness")
 	ErrInvalidMinerBlockTime    = errors.New("invalid time to miner the block")
@@ -387,16 +388,14 @@ func (d *Circum) CheckWitness(lastBlock *types.Block, now int64) error {
 }
 
 func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
-	nextPeriod := (now - lastBlock.Time) / params.Period
-	if nextPeriod == 0 {
-		return "", ErrWaitForPrevBlock
-	}
 	stableBlockNumber := d.getStableBlockNumber(lastBlock.Number)
 	nodes, err := d.masternodeListFn(stableBlockNumber)
 	if err != nil {
 		return "", fmt.Errorf("Get current masternodes failed from contract\n%s", err)
 	}
-	nodesmap := make(map[string]int, len(nodes))
+	nextNth := ((now - params.GenesisTime) / params.Period) % uint64(len(nodes))
+	// fmt.Println(now, params.GenesisTime, (now - params.GenesisTime) / params.Period, nextNth, lastBlock.Witness)
+	nodesmap := make(map[string]int)
 	for i, witness := range nodes {
 		nodesmap[witness] = i
 	}
@@ -404,7 +403,9 @@ func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
 	if lastBlock.Time > now {
 		return "", fmt.Errorf("lookup error time")
 	}
-	nextNth := (uint64(lastNth) + nextPeriod) % uint64(len(nodes))
+	if nextNth == uint64(lastNth) {
+		return "", ErrWaitForRightTime
+	}
 	return nodes[nextNth], nil
 }
 

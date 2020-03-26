@@ -77,7 +77,7 @@ const (
 
 	// Precompiled contract gas prices
 
-	EcrecoverGas            uint64 = 3000   // Elliptic curve sender recovery gas price
+	EcrecoverGas            uint64 = 3000 // Elliptic curve sender recovery gas price
 	PeeridrecoverGas        uint64 = 3000
 	Sha256BaseGas           uint64 = 60     // Base price for a SHA256 operation
 	Sha256PerWordGas        uint64 = 12     // Per-word price for a SHA256 operation
@@ -91,7 +91,8 @@ const (
 	Bn256PairingBaseGas     uint64 = 100000 // Base price for an elliptic curve pairing check
 	Bn256PairingPerPointGas uint64 = 80000  // Per-point price for an elliptic curve pairing check
 
-	Period             uint64 = 3
+	Period      uint64 = 3
+	GenesisTime uint64 = 1585179200
 )
 
 var (
