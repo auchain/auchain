@@ -201,7 +201,7 @@ func AccumulateRewards(state *state.StateDB, header *types.Header) {
 }
 
 func (d *Circum) getStableBlockNumber(number *big.Int) (*big.Int) {
-	stableBlockNumber := new(big.Int).Sub(number, big.NewInt(1))
+	stableBlockNumber := new(big.Int).Sub(number, big.NewInt(2))
 	if stableBlockNumber.Cmp(big.NewInt(int64(params.GenesisBlockNumber))) < 0 {
 		return big.NewInt(int64(params.GenesisBlockNumber))
 	}
@@ -340,7 +340,7 @@ func (d *Circum) verifySeal(chain consensus.ChainReader, header *types.Header, p
 	if err := d.verifyBlockSigner(witness, header); err != nil {
 		return err
 	}
-	return d.updateConfirmedBlockHeader(chain)
+	return nil
 }
 
 func (d *Circum) verifyBlockSigner(witness string, header *types.Header) error {
@@ -358,22 +358,25 @@ func (d *Circum) verifyBlockSigner(witness string, header *types.Header) error {
 }
 
 func (d *Circum) checkTime(lastBlock *types.Block, now uint64) error {
+	quotientsLast := lastBlock.Time() / params.Period
 	quotients := now / params.Period
 	remainder := now % params.Period
-
+	fmt.Printf("checkTime now=%d quotientsLast=%d quotients=%d remainder=%d ", now, quotientsLast, quotients, remainder)
 	if lastBlock.Time() >= (quotients * params.Period + 2) {
 		return ErrMinerFutureBlock
 	}
-	if remainder == 1 {
+	if quotients > quotientsLast {
+		//fmt.Println("ok")
 		return nil
 	}
+	fmt.Println("ErrWaitForPrevBlock")
 	return ErrWaitForPrevBlock
 }
 
 func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
 	quotientsLast := lastBlock.Time / params.Period
 	quotients := now / params.Period
-	if quotientsLast == quotients {
+	if quotientsLast >= quotients {
 		return "", fmt.Errorf("[LOOKUP] Invalid Period")
 	}
 	if lastBlock.Time > now {
@@ -385,7 +388,7 @@ func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
 		return "", fmt.Errorf("Get current masternodes failed from contract: %s", err)
 	}
 	nextNth := quotients % uint64(len(nodes))
-	fmt.Println(now, quotients, nextNth, lastBlock.Witness, len(nodes))
+	fmt.Printf("nodes=%d lastWitness=%s lastBlock=%d nextNth=%d nextWitness=%s\n", len(nodes), lastBlock.Witness, lastBlock.Number, nextNth, nodes[nextNth])
 	return nodes[nextNth], nil
 }
 
@@ -463,66 +466,6 @@ func ecrecover(header *types.Header, sigcache *lru.ARCCache) (string, error) {
 	}
 	id := fmt.Sprintf("%x", pubkey[1:9])
 	return id, nil
-}
-
-func (d *Circum) updateConfirmedBlockHeader(chain consensus.ChainReader) error {
-	if d.confirmedBlockHeader == nil {
-		header, err := d.loadConfirmedBlockHeader(chain)
-		if err != nil {
-			header = chain.GetHeaderByNumber(params.GenesisBlockNumber)
-			if header == nil {
-				return err
-			}
-		}
-		d.confirmedBlockHeader = header
-	}
-
-	curHeader := chain.CurrentHeader()
-	witnessMap := make(map[string]bool)
-	consensusSize := int(15)
-	for d.confirmedBlockHeader.Hash() != curHeader.Hash() &&
-		d.confirmedBlockHeader.Number.Uint64() < curHeader.Number.Uint64() {
-		// fast return
-		// if block number difference less consensusSize-witnessNum
-		// there is no need to check block is confirmed
-		if curHeader.Number.Int64()-d.confirmedBlockHeader.Number.Int64() < int64(consensusSize-len(witnessMap)) {
-			log.Debug("Circum fast return", "current", curHeader.Number.String(), "confirmed", d.confirmedBlockHeader.Number.String(), "witnessCount", len(witnessMap))
-			return nil
-		}
-		witnessMap[curHeader.Witness] = true
-		if len(witnessMap) >= consensusSize {
-			d.confirmedBlockHeader = curHeader
-			if err := d.storeConfirmedBlockHeader(d.db); err != nil {
-				return err
-			}
-			log.Debug("circum set confirmed block header success", "currentHeader", curHeader.Number.String())
-			return nil
-		}
-		curHeader = chain.GetHeaderByHash(curHeader.ParentHash)
-		if curHeader == nil {
-			return ErrNilBlockHeader
-		}
-	}
-	return nil
-}
-
-// store inserts the snapshot into the database.
-func (d *Circum) storeConfirmedBlockHeader(db ethdb.Database) error {
-	db.Put(confirmedBlockHead, d.confirmedBlockHeader.Hash().Bytes())
-	return nil
-}
-
-func (d *Circum) loadConfirmedBlockHeader(chain consensus.ChainReader) (*types.Header, error) {
-
-	key, err := d.db.Get(confirmedBlockHead)
-	if err != nil {
-		return nil, err
-	}
-	header := chain.GetHeaderByHash(common.BytesToHash(key))
-	if header == nil {
-		return nil, ErrNilBlockHeader
-	}
-	return header, nil
 }
 
 // APIs implements consensus.Engine, returning the user facing RPC APIs.

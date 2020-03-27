@@ -37,7 +37,6 @@ import (
 	"github.com/auchain/auchain/event"
 	"github.com/auchain/auchain/log"
 	"github.com/auchain/auchain/p2p"
-	"github.com/auchain/auchain/p2p/discover"
 	"github.com/auchain/auchain/params"
 )
 
@@ -181,8 +180,8 @@ func (self *MasternodeManager) masternodeLoop() {
 
 	ping := time.NewTimer(10 * time.Minute)
 	defer ping.Stop()
-	ntp := time.NewTimer(60 * time.Second)
-	defer ntp.Stop()
+	//ntp := time.NewTimer(60 * time.Second)
+	//defer ntp.Stop()
 
 	for {
 		select {
@@ -201,9 +200,9 @@ func (self *MasternodeManager) masternodeLoop() {
 				fmt.Printf("### [%x] Remove masternode! \n", quit.Id)
 				atomic.StoreUint32(&self.isMasternode, 0)
 			}
-		case <-ntp.C:
-			ntp.Reset(10 * time.Minute)
-			go discover.CheckClockDrift()
+		//case <-ntp.C:
+		//	ntp.Reset(10 * time.Minute)
+		//	go discover.CheckClockDrift()
 		case <-ping.C:
 			logTime := time.Now().Format("[2006-01-02 15:04:05]")
 			ping.Reset(20 * time.Minute)

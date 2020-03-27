@@ -92,7 +92,6 @@ const (
 	Bn256PairingPerPointGas uint64 = 80000  // Per-point price for an elliptic curve pairing check
 
 	Period      uint64 = 3
-	GenesisTime uint64 = 1585179200
 )
 
 var (

@@ -18,8 +18,6 @@
 package circum
 
 import (
-	"math/big"
-
 	"github.com/auchain/auchain/consensus"
 )
 // API is a user facing RPC API to allow controlling the delegate and voting
@@ -27,19 +25,6 @@ import (
 type API struct {
 	chain consensus.ChainReader
 	circum  *Circum
-}
-
-// GetConfirmedBlockNumber retrieves the latest irreversible block
-func (api *API) GetConfirmedBlockNumber() (*big.Int, error) {
-	var err error
-	header := api.circum.confirmedBlockHeader
-	if header == nil {
-		header, err = api.circum.loadConfirmedBlockHeader(api.chain)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return header.Number, nil
 }
 
 // Proposals returns the current proposals the node tries to uphold and vote on.
