@@ -163,7 +163,7 @@ func newWorker(config *params.ChainConfig, engine consensus.Engine, coinbase com
 	go worker.update()
 
 	go worker.wait()
-	worker.commitNewWork()
+	worker.commitNewWork(0)
 
 	return worker
 }
@@ -280,7 +280,7 @@ func (self *worker) mine(now int64) {
 		return
 	}
 
-	work, err := self.commitNewWork()
+	work, err := self.commitNewWork(0)
 	if err != nil {
 		log.Error("Failed to create the new work", "err", err)
 		return
@@ -349,7 +349,7 @@ func (self *worker) update() {
 		select {
 		// Handle ChainHeadEvent
 		case <-self.chainHeadCh:
-			self.commitNewWork()
+			self.commitNewWork(0)
 
 			// Handle NewTxsEvent
 		case ev := <-self.txsCh:
@@ -372,7 +372,7 @@ func (self *worker) update() {
 			} else {
 				// If we're mining, but nothing is being processed, wake on new transactions
 				if self.config.Clique != nil && self.config.Clique.Period == 0 {
-					self.commitNewWork()
+					self.commitNewWork(0)
 				}
 			}
 
@@ -474,7 +474,7 @@ func (self *worker) makeCurrent(parent *types.Block, header *types.Header) error
 	return nil
 }
 
-func (self *worker) commitNewWork() (*Work, error) {
+func (self *worker) commitNewWork(witnessTime int64) (*Work, error) {
 	self.mu.Lock()
 	defer self.mu.Unlock()
 	self.uncleMu.Lock()
@@ -485,24 +485,13 @@ func (self *worker) commitNewWork() (*Work, error) {
 	tstart := time.Now()
 	parent := self.chain.CurrentBlock()
 
-	tstamp := tstart.Unix()
-	if int64(parent.Time()) >= tstamp {
-		tstamp = int64(parent.Time()) + 1
-	}
-	// this will ensure we're not going off too far in the future
-	if now := time.Now().Unix(); tstamp > now+1 {
-		wait := time.Duration(tstamp-now) * time.Second
-		log.Info("Mining too far in the future", "wait", common.PrettyDuration(wait))
-		time.Sleep(wait)
-	}
-
 	num := parent.Number()
 	header := &types.Header{
 		ParentHash: parent.Hash(),
 		Number:     num.Add(num, common.Big1),
 		GasLimit:   core.CalcGasLimit(parent),
 		Extra:      self.extra,
-		Time:       uint64(tstamp),
+		Time:       uint64(witnessTime),
 	}
 	if err := self.engine.Prepare(self.chain, header); err != nil {
 		return nil, fmt.Errorf("got error when preparing header, err: %s", err)
