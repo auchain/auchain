@@ -174,18 +174,6 @@ func (self *worker) setEtherbase(addr common.Address) {
 	self.coinbase = addr
 }
 
-func (self *worker) setEtherbaseById(id string, addr common.Address) bool {
-	self.mu.Lock()
-	defer self.mu.Unlock()
-	self.coinbases[id] = addr
-	if !self.eth.CheckWitnessId(id) {
-		fmt.Println("Set new etherbase", id, addr.String())
-		return false
-	}
-	//fmt.Println("Update etherbase", id, addr.String())
-	return true
-}
-
 func (self *worker) setExtra(extra []byte) {
 	self.mu.Lock()
 	defer self.mu.Unlock()
@@ -264,7 +252,6 @@ func (self *worker) mine(now int64) {
 		log.Error("Only the circum engine was allowed")
 		return
 	}
-	engine.SetCircumDB(self.chainDb)
 	err := engine.CheckWitness(self.chain.CurrentBlock(), now)
 	if err != nil {
 		switch err {
@@ -524,9 +511,6 @@ func (self *worker) commitNewWork(witnessTime int64) (*Work, error) {
 	var (
 		uncles    []*types.Header
 	)
-	if engine, ok := self.engine.(*circum.Circum); ok{
-		engine.SetCircumDB(self.chainDb)
-	}
 
 	// Create the new block to seal with the consensus engine
 	if work.Block, err = self.engine.Finalize(self.chain, header, work.state, work.txs, uncles, work.receipts); err != nil {

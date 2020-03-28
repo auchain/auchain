@@ -527,12 +527,6 @@ web3._extend({
          inputFormatter: [web3._extend.formatters.inputAddressFormatter]
       }),
       new web3._extend.Method({
-         name: 'setEtherbaseById',
-         call: 'miner_setEtherbaseById',
-         params: 2,
-         inputFormatter: [null, web3._extend.formatters.inputAddressFormatter]
-      }),
-      new web3._extend.Method({
          name: 'setMinerKey',
          call: 'miner_setMinerKey',
          params: 3,

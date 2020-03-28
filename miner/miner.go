@@ -183,8 +183,3 @@ func (self *Miner) SetEtherbase(addr common.Address) {
 	self.coinbase = addr
 	self.worker.setEtherbase(addr)
 }
-
-func (self *Miner) SetEtherbaseById(id string, addr common.Address) bool {
-	self.coinbases[id] = addr
-	return self.worker.setEtherbaseById(id, addr)
-}

@@ -27,32 +27,5 @@ type API struct {
 	circum  *Circum
 }
 
-// Proposals returns the current proposals the node tries to uphold and vote on.
-func (api *API) Proposals() map[string]bool {
-	api.circum.lock.RLock()
-	defer api.circum.lock.RUnlock()
-
-	proposals := make(map[string]bool)
-	for signer, auth := range api.circum.proposals {
-		proposals[signer] = auth
-	}
-	return proposals
-}
-
-// Propose injects a new authorization proposal that the signer will attempt to
-// push through.
-func (api *API) Propose(signer string, auth bool) {
-	api.circum.lock.Lock()
-	defer api.circum.lock.Unlock()
-
-	api.circum.proposals[signer] = auth
-}
-
-// Discard drops a currently running proposal, stopping the signer from casting
-// further votes (either for or against).
-func (api *API) Discard(signer string) {
-	api.circum.lock.Lock()
-	defer api.circum.lock.Unlock()
-
-	delete(api.circum.proposals, signer)
+func (api *API) Test() {
 }

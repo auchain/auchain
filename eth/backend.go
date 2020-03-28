@@ -189,7 +189,6 @@ func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 
 	if engine, ok := eth.engine.(*circum.Circum); ok {
 		engine.Masternodes(eth.masternodeManager.MasternodeList)
-		engine.SetCircumDB(chainDb)
 	}
 
 	eth.miner = miner.New(eth, eth.chainConfig, eth.EventMux(), eth.engine)

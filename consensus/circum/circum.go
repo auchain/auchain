@@ -37,15 +37,12 @@ import (
 	"github.com/auchain/auchain/params"
 	"github.com/auchain/auchain/rlp"
 	"github.com/auchain/auchain/rpc"
-	"github.com/hashicorp/golang-lru"
 	"math"
 )
 
 const (
-	extraVanity        = 32   // Fixed number of extra-data prefix bytes reserved for signer vanity
-	extraSeal          = 65   // Fixed number of extra-data suffix bytes reserved for signer seal
-	inmemorySnapshots  = 128  // Number of recent snapshots to keep in memory
-	inmemorySignatures = 4096 // Number of recent block signatures to keep in memory
+	extraVanity = 32 // Fixed number of extra-data prefix bytes reserved for signer vanity
+	extraSeal   = 65 // Fixed number of extra-data suffix bytes reserved for signer seal
 )
 
 var (
@@ -58,9 +55,9 @@ var (
 		new(big.Int).SetUint64(32656250000000000),
 		new(big.Int).SetUint64(16328125000000000),
 	}
-	rewardPeriod uint64 = 10512000
-	confirmedBlockHead = []byte("confirmed-block-head")
-	uncleHash          = types.CalcUncleHash(nil) // Always Keccak256(RLP([])) as uncles are meaningless outside of PoW.
+	rewardPeriod       uint64 = 10512000
+	confirmedBlockHead        = []byte("confirmed-block-head")
+	uncleHash                 = types.CalcUncleHash(nil) // Always Keccak256(RLP([])) as uncles are meaningless outside of PoW.
 
 	// errUnknownBlock is returned when the list of signers is requested for a block
 	// that is not part of the local blockchain.
@@ -134,31 +131,24 @@ func sigHash(header *types.Header) (hash common.Hash) {
 
 type Circum struct {
 	config *params.CircumConfig // Consensus engine configuration parameters
-	db     ethdb.Database       // Database to store and retrieve snapshot checkpoints
 
-	signer     string          // master node nodeid
-	signFn     SignerFn        // signature function
-	recents    *lru.ARCCache   // Snapshots for recent block to speed up reorgs
-	signatures *lru.ARCCache   // Signatures of recent blocks to speed up mining
-	proposals  map[string]bool // Current list of proposals we are pushing
+	signer string   // master node nodeid
+	signFn SignerFn // signature function
 
 	confirmedBlockHeader *types.Header
 	masternodeListFn     MasternodeListFn //get current all masternodes
 	mu                   sync.RWMutex
 	lock                 sync.RWMutex
 	stop                 chan bool
+
+	cacheNumber uint64
+	cacheNodes  []string
 }
 
 func NewCircum(config *params.CircumConfig, db ethdb.Database) *Circum {
-	// Allocate the snapshot caches and create the engine
-	recents, _ := lru.NewARC(inmemorySnapshots)
-	signatures, _ := lru.NewARC(inmemorySignatures)
 	return &Circum{
-		config:     config,
-		db:         db,
-		signatures: signatures,
-		recents:    recents,
-		proposals:  make(map[string]bool),
+		cacheNumber: 0,
+		config:      config,
 	}
 }
 
@@ -200,7 +190,7 @@ func AccumulateRewards(state *state.StateDB, header *types.Header) {
 	}
 }
 
-func (d *Circum) getStableBlockNumber(number *big.Int) (*big.Int) {
+func (d *Circum) getStableBlockNumber(number *big.Int) *big.Int {
 	stableBlockNumber := new(big.Int).Sub(number, big.NewInt(2))
 	if stableBlockNumber.Cmp(big.NewInt(int64(params.GenesisBlockNumber))) < 0 {
 		return big.NewInt(int64(params.GenesisBlockNumber))
@@ -216,17 +206,12 @@ func (d *Circum) Finalize(chain consensus.ChainReader, header *types.Header, sta
 	// Accumulate block rewards and commit the final state root
 	AccumulateRewards(state, header)
 	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
-	stableBlockNumber := d.getStableBlockNumber(parent.Number)
-	nodes, err := d.masternodeListFn(stableBlockNumber)
-	if err != nil {
-		return nil, fmt.Errorf("Get current masternodes failed from contract\n%s", err)
-	}
-	d.signatures.Add(header.Number.Uint64(), nodes)
 
 	//accumulating the signer of block
 	log.Debug("rolling ", "Number", header.Number, "parentTime", parent.Time, "headerTime", header.Time, "witness", header.Witness)
 	return types.NewBlock(header, txs, uncles, receipts), nil
 }
+
 // Author implements consensus.Engine, returning the header's coinbase as the
 // proof-of-stake verified author of the block.
 func (d *Circum) Author(header *types.Header) (common.Address, error) {
@@ -344,7 +329,7 @@ func (d *Circum) verifySeal(chain consensus.ChainReader, header *types.Header, p
 }
 
 func (d *Circum) verifyBlockSigner(witness string, header *types.Header) error {
-	signer, err := ecrecover(header, d.signatures)
+	signer, err := ecrecover(header)
 	if err != nil {
 		return err
 	}
@@ -362,7 +347,7 @@ func (d *Circum) checkTime(lastBlock *types.Block, now uint64) error {
 	quotients := now / params.Period
 	remainder := now % params.Period
 	fmt.Printf("checkTime now=%d quotientsLast=%d quotients=%d remainder=%d ", now, quotientsLast, quotients, remainder)
-	if lastBlock.Time() >= (quotients * params.Period + 2) {
+	if lastBlock.Time() >= (quotients*params.Period + 2) {
 		return ErrMinerFutureBlock
 	}
 	if (quotients > quotientsLast) && (remainder == 0) {
@@ -382,14 +367,29 @@ func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
 	if lastBlock.Time > now {
 		return "", fmt.Errorf("[LOOKUP] Invalid lastBlock.Time")
 	}
-	stableBlockNumber := d.getStableBlockNumber(lastBlock.Number)
-	nodes, err := d.masternodeListFn(stableBlockNumber)
-	if err != nil {
-		return "", fmt.Errorf("Get current masternodes failed from contract: %s", err)
+
+	fixedNumber := lastBlock.Number.Uint64()
+	if fixedNumber > 21 {
+		fixedNumber = (fixedNumber/20*20 - 1)
+	} else {
+		fixedNumber = 0
 	}
-	nextNth := quotients % uint64(len(nodes))
-	fmt.Printf("nodes=%d lastWitness=%s lastBlock=%d nextNth=%d nextWitness=%s\n", len(nodes), lastBlock.Witness, lastBlock.Number, nextNth, nodes[nextNth])
-	return nodes[nextNth], nil
+
+	if fixedNumber == d.cacheNumber && fixedNumber > 0 {
+	} else {
+		nodes, err := d.masternodeListFn(big.NewInt(int64(fixedNumber)))
+		if err != nil {
+			return "", fmt.Errorf("Get current masternodes failed from contract: %s", err)
+		}
+		d.cacheNumber = fixedNumber
+		d.cacheNodes = nodes
+	}
+
+	nextNth := quotients % uint64(len(d.cacheNodes))
+	fmt.Printf("nodes=%d lastWitness=%s lastBlock=%d nextNth=%d nextWitness=%s fixedNumber=%d\n",
+		len(d.cacheNodes), lastBlock.Witness, lastBlock.Number, nextNth, d.cacheNodes[nextNth], fixedNumber)
+
+	return d.cacheNodes[nextNth], nil
 }
 
 func (d *Circum) CheckWitness(lastBlock *types.Block, now int64) error {
@@ -453,7 +453,7 @@ func (d *Circum) Masternodes(masternodeListFn MasternodeListFn) {
 }
 
 // ecrecover extracts the Masternode account ID from a signed header.
-func ecrecover(header *types.Header, sigcache *lru.ARCCache) (string, error) {
+func ecrecover(header *types.Header) (string, error) {
 	// Retrieve the signature from the header extra-data
 	if len(header.Extra) < extraSeal {
 		return "", errMissingSignature
@@ -486,8 +486,4 @@ func (d *Circum) Close() error {
 // SealHash returns the hash of a block prior to it being sealed.
 func (d *Circum) SealHash(header *types.Header) common.Hash {
 	return sigHash(header)
-}
-
-func (d *Circum) SetCircumDB(db ethdb.Database) {
-	d.db = db
 }
