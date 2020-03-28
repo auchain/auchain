@@ -365,8 +365,8 @@ func (d *Circum) checkTime(lastBlock *types.Block, now uint64) error {
 	if lastBlock.Time() >= (quotients * params.Period + 2) {
 		return ErrMinerFutureBlock
 	}
-	if quotients > quotientsLast {
-		//fmt.Println("ok")
+	if (quotients > quotientsLast) && (remainder == 0) {
+		fmt.Println("ok")
 		return nil
 	}
 	fmt.Println("ErrWaitForPrevBlock")

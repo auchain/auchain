@@ -280,7 +280,7 @@ func (self *worker) mine(now int64) {
 		return
 	}
 
-	work, err := self.commitNewWork(0)
+	work, err := self.commitNewWork(now)
 	if err != nil {
 		log.Error("Failed to create the new work", "err", err)
 		return
