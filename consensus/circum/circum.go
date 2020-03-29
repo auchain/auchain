@@ -190,14 +190,6 @@ func AccumulateRewards(state *state.StateDB, header *types.Header) {
 	}
 }
 
-func (d *Circum) getStableBlockNumber(number *big.Int) *big.Int {
-	stableBlockNumber := new(big.Int).Sub(number, big.NewInt(2))
-	if stableBlockNumber.Cmp(big.NewInt(int64(params.GenesisBlockNumber))) < 0 {
-		return big.NewInt(int64(params.GenesisBlockNumber))
-	}
-	return stableBlockNumber
-}
-
 // Finalize implements consensus.Engine, accumulating the block and uncle rewards,
 // setting the final state and assembling the block.
 func (d *Circum) Finalize(chain consensus.ChainReader, header *types.Header, state *state.StateDB, txs []*types.Transaction,
@@ -346,15 +338,12 @@ func (d *Circum) checkTime(lastBlock *types.Block, now uint64) error {
 	quotientsLast := lastBlock.Time() / params.Period
 	quotients := now / params.Period
 	remainder := now % params.Period
-	fmt.Printf("checkTime now=%d quotientsLast=%d quotients=%d remainder=%d ", now, quotientsLast, quotients, remainder)
 	if lastBlock.Time() >= (quotients*params.Period + 2) {
 		return ErrMinerFutureBlock
 	}
 	if (quotients > quotientsLast) && (remainder == 0) {
-		fmt.Println("ok")
 		return nil
 	}
-	fmt.Println("ErrWaitForPrevBlock")
 	return ErrWaitForPrevBlock
 }
 
@@ -386,9 +375,6 @@ func (d *Circum) lookup(now uint64, lastBlock *types.Header) (string, error) {
 	}
 
 	nextNth := quotients % uint64(len(d.cacheNodes))
-	fmt.Printf("nodes=%d lastWitness=%s lastBlock=%d nextNth=%d nextWitness=%s fixedNumber=%d\n",
-		len(d.cacheNodes), lastBlock.Witness, lastBlock.Number, nextNth, d.cacheNodes[nextNth], fixedNumber)
-
 	return d.cacheNodes[nextNth], nil
 }
 
